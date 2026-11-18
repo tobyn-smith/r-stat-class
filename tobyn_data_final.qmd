@@ -1,0 +1,309 @@
+---
+title: "Does Who Issues an AI Policy Affect Whether It Gets Enacted?"
+author: "Tobyn Smith"
+format: pdf
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r}
+#| label: load-data
+documents <- read.csv("data/agora/documents.csv")
+authorities <- read.csv("data/agora/authorities.csv")
+```
+
+## Research question and hypotheses
+
+Does who issues an AI policy affect whether it gets enacted?
+
+**Hypothesis (H1):** AI policies issued by federal agencies are more likely to be enacted than AI bills proposed in Congress.
+
+**Null hypothesis (H0):** The issuing authority makes no difference to whether an AI policy is enacted.
+
+[text]
+
+## Data
+
+[text]
+
+## A first look at the data
+
+```{r}
+#| label: first-look
+head(documents[, c("Authority", "Most.recent.activity")])
+dim(documents)
+dim(authorities)
+
+## View(documents)
+
+## most recent activity
+table(documents$Most.recent.activity, exclude = NULL)
+
+## number of different authorities
+dim(table(documents$Authority))
+```
+
+## Coding the issuer
+
+[text]
+
+```{r}
+#| label: parent-group
+## parent group for each authority (from authorities.csv)
+documents$parent <- authorities$Parent.authority[match(documents$Authority,
+                                                       authorities$Name)]
+sum(is.na(match(documents$Authority, authorities$Name)))
+table(documents$parent, exclude = NULL)
+```
+
+```{r}
+#| label: issuer
+## issuer: Congress, federal agency or state
+documents$issuer <- NA
+documents$issuer <- ifelse(documents$Authority == "United States Congress",
+                           "Congress", documents$issuer)
+documents$issuer <- ifelse(documents$parent == "Federal government" &
+                           documents$Authority != "United States Congress",
+                           "Federal agency", documents$issuer)
+documents$issuer <- ifelse(documents$parent == "State governments",
+                           "State", documents$issuer)
+table(documents$issuer, exclude = NULL)
+
+## authorities counted as federal agencies
+table(documents$Authority[documents$issuer == "Federal agency"])
+```
+
+## Proposed and enacted
+
+[text]
+
+```{r}
+#| label: dropping-defunct
+## keeping Congress, federal agencies and states only
+issuers <- documents[!is.na(documents$issuer), ]
+table(issuers$issuer, issuers$Most.recent.activity)
+
+## dropping Defunct (DV is proposed or enacted)
+policies <- issuers[issuers$Most.recent.activity != "Defunct", ]
+policies$enacted <- ifelse(policies$Most.recent.activity == "Enacted", 1, 0)
+
+## N used and dropped
+nrow(documents)
+nrow(documents) - nrow(issuers)
+sum(issuers$Most.recent.activity == "Defunct")
+nrow(policies)
+```
+
+## Enacted by issuer
+
+[text]
+
+```{r}
+#| label: activity-counts
+## enacted and proposed by issuer
+activity_counts <- table(policies$issuer, policies$Most.recent.activity)
+activity_counts
+sum(activity_counts)
+
+## percentages within each issuer
+100 * prop.table(activity_counts, margin = 1)
+
+## share enacted by issuer
+congress <- policies$enacted[policies$issuer == "Congress"]
+agency <- policies$enacted[policies$issuer == "Federal agency"]
+state <- policies$enacted[policies$issuer == "State"]
+
+table(policies$issuer)
+
+pct_enacted <- 100 * c("Congress" = mean(congress),
+                       "Federal agency" = mean(agency),
+                       "State" = mean(state))
+pct_enacted
+```
+
+```{r}
+#| label: group-intervals
+## 95% confidence intervals
+## Congress
+100 * (mean(congress) - 1.96 * sqrt(var(congress) / length(congress)))
+100 * (mean(congress) + 1.96 * sqrt(var(congress) / length(congress)))
+
+## federal agency
+100 * (mean(agency) - 1.96 * sqrt(var(agency) / length(agency)))
+100 * (mean(agency) + 1.96 * sqrt(var(agency) / length(agency)))
+
+## state
+100 * (mean(state) - 1.96 * sqrt(var(state) / length(state)))
+100 * (mean(state) + 1.96 * sqrt(var(state) / length(state)))
+```
+
+## Federal agency vs Congress
+
+[text]
+
+```{r}
+#| label: difference-in-means
+## federal agency vs Congress
+treatment <- policies[policies$issuer == "Federal agency", ]
+control <- policies[policies$issuer == "Congress", ]
+n_t <- nrow(treatment)
+n_c <- nrow(control)
+
+## difference in means
+diff_means <- mean(treatment$enacted) - mean(control$enacted)
+100 * diff_means
+
+## standard error
+se_diff <- sqrt(var(treatment$enacted) / n_t + var(control$enacted) / n_c)
+
+## 95% confidence interval
+100 * (diff_means - 1.96 * se_diff)
+100 * (diff_means + 1.96 * se_diff)
+
+## z-statistic and p-values
+z_obs <- diff_means / se_diff
+z_obs
+2 * pnorm(-abs(z_obs))
+pnorm(-z_obs)
+
+## reject H0 at 5%?
+2 * pnorm(-abs(z_obs)) < 0.05
+```
+
+```{r}
+#| label: regression
+## same comparison with lm()
+two_groups <- policies[policies$issuer != "State", ]
+two_groups$agency <- ifelse(two_groups$issuer == "Federal agency", 1, 0)
+fit <- lm(enacted ~ agency, data = two_groups)
+fit
+summary(fit)$coef
+```
+
+## Share enacted by issuer
+
+[text]
+
+```{r}
+#| label: save-figures
+#| include: false
+## bar charts
+png("figures/fig1_pct_enacted_by_issuer.png",
+    width = 8, height = 5.5, units = "in", res = 300)
+barplot(pct_enacted, ylim = c(0, 100),
+        xlab = "Issuer", ylab = "% enacted",
+        main = "Share of AI policies enacted, by issuer")
+dev.off()
+
+png("figures/fig2_counts_by_issuer.png",
+    width = 8, height = 5.5, units = "in", res = 300)
+barplot(t(activity_counts), legend.text = TRUE,
+        xlab = "Issuer", ylab = "Number of documents",
+        main = "AI policy documents by issuer and status")
+dev.off()
+```
+
+```{r}
+#| label: pct-enacted-chart
+#| fig-width: 7
+#| fig-height: 4.5
+## share enacted
+barplot(pct_enacted, ylim = c(0, 100),
+        xlab = "Issuer", ylab = "% enacted",
+        main = "Share of AI policies enacted, by issuer")
+```
+
+```{r}
+#| label: counts-chart
+#| fig-width: 7
+#| fig-height: 4.5
+## enacted and proposed
+barplot(t(activity_counts), legend.text = TRUE,
+        xlab = "Issuer", ylab = "Number of documents",
+        main = "AI policy documents by issuer and status")
+```
+
+## Checks
+
+[text]
+
+```{r}
+#| label: check-defunct
+## check 1: Defunct counted as not enacted
+issuers$enacted <- ifelse(issuers$Most.recent.activity == "Enacted", 1, 0)
+agency_all <- issuers$enacted[issuers$issuer == "Federal agency"]
+congress_all <- issuers$enacted[issuers$issuer == "Congress"]
+length(agency_all)
+length(congress_all)
+
+diff_defunct <- mean(agency_all) - mean(congress_all)
+se_defunct <- sqrt(var(agency_all) / length(agency_all) +
+                   var(congress_all) / length(congress_all))
+100 * diff_defunct
+100 * (diff_defunct - 1.96 * se_defunct)
+100 * (diff_defunct + 1.96 * se_defunct)
+diff_defunct / se_defunct
+2 * pnorm(-abs(diff_defunct / se_defunct))
+```
+
+```{r}
+#| label: check-no-eop
+## check 2: without the Executive Office of the President
+agency_no_eop <- policies$enacted[policies$issuer == "Federal agency" &
+                                  policies$Authority != "Executive Office of the President"]
+length(agency_no_eop)
+
+diff_no_eop <- mean(agency_no_eop) - mean(control$enacted)
+se_no_eop <- sqrt(var(agency_no_eop) / length(agency_no_eop) +
+                  var(control$enacted) / n_c)
+100 * diff_no_eop
+100 * (diff_no_eop - 1.96 * se_no_eop)
+100 * (diff_no_eop + 1.96 * se_no_eop)
+diff_no_eop / se_no_eop
+2 * pnorm(-abs(diff_no_eop / se_no_eop))
+```
+
+```{r}
+#| label: check-validated
+## check 3: validated rows only
+validated <- policies[policies$Validated. == "true", ]
+table(validated$issuer, validated$Most.recent.activity)
+
+agency_val <- validated$enacted[validated$issuer == "Federal agency"]
+congress_val <- validated$enacted[validated$issuer == "Congress"]
+length(agency_val)
+length(congress_val)
+
+diff_val <- mean(agency_val) - mean(congress_val)
+se_val <- sqrt(var(agency_val) / length(agency_val) +
+               var(congress_val) / length(congress_val))
+100 * diff_val
+100 * (diff_val - 1.96 * se_val)
+100 * (diff_val + 1.96 * se_val)
+diff_val / se_val
+2 * pnorm(-abs(diff_val / se_val))
+```
+
+## Result
+
+```{r}
+#| label: sentence-numbers
+## numbers for the assuming sentence
+round(100 * diff_means, 1)
+round(100 * (diff_means - 1.96 * se_diff), 1)
+round(100 * (diff_means + 1.96 * se_diff), 1)
+```
+
+Assuming [the treatment and control groups are comparable] (a reasonable assumption because [justification for the assumption]), we estimate that [the treatment] [increases/decreases] [outcome] by [size and unit of measurement of the effect] on average.
+
+[text]
+
+## Limitations
+
+[text]
+
+## Policy implications
+
+[text]
+
+Dataset citation: Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J., & Girard, T. (2026). AGORA Dataset (Version 1.32.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21964209
