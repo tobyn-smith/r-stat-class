@@ -1,14 +1,16 @@
 # Data final: AI policy documents in AGORA
 
-Reproducible R code for the INTL 7007 (University of Georgia) data final poster. The analysis asks whether who issues an AI policy is associated with whether the policy is enacted, using AGORA document and authority records.
+R code for my INTL 7007 (University of Georgia) data final. I ask whether who issues an AI policy is linked to whether it is enacted, using AGORA document and authority records.
+
+The printed poster is layout C. The interactive version of that poster is already live at https://tobynsmith.me/data/ (in the `tobyn-smith/me` repo). This repository is the R work behind it.
+
+A longer, phone-only write-up sits in `poster/`. It is meant to be opened from a QR code on the printed poster, not from the rest of my site. The print-quality QR files are `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`. They point at https://tobyn-smith.github.io/r-stat-class/
+
+I used GitHub Pages on this repo, with `poster/` as the site root, so I did not have to change https://tobynsmith.me/data/. The page is unlisted: `noindex, nofollow`, a `robots.txt` that disallows crawling, and no sitemap.
 
 ## How to run
 
-Requirements:
-
-- R
-- Base R packages only (`utils`, `stats`, `graphics`, `grDevices`). No additional packages are loaded.
-- Optional: [Quarto](https://quarto.org/) to render `tobyn_data_final.qmd`
+You need R. The script uses base R only (`utils`, `stats`, `graphics`, `grDevices`). Quarto is optional, for `tobyn_data_final.qmd`.
 
 From the repository root:
 
@@ -17,7 +19,7 @@ mkdir -p figures
 Rscript analysis.R
 ```
 
-`analysis.R` reads `data/agora/documents.csv` and `data/agora/authorities.csv` and writes PNG figures to `figures/`.
+`analysis.R` reads `data/agora/documents.csv` and `data/agora/authorities.csv` and writes PNG figures to `figures/`. It also prints the text-analysis tables (word counts, tf-idf, and the word-share correlations).
 
 To render the Quarto notebook:
 
@@ -27,13 +29,13 @@ quarto render tobyn_data_final.qmd
 
 ## Data
 
-Analysis uses **AGORA v1.32.0**, the AI GOvernance and Regulatory Archive from the [Emerging Technology Observatory](https://eto.tech/) (ETO), a project of the Center for Security and Emerging Technology (CSET) at Georgetown University.
+I use **AGORA v1.32.0**, the AI GOvernance and Regulatory Archive from the [Emerging Technology Observatory](https://eto.tech/) (ETO), a project of the Center for Security and Emerging Technology (CSET) at Georgetown University.
 
 - Tool: https://agora.eto.tech/
 - Dataset documentation: https://eto.tech/dataset-docs/agora-dataset/
 - This version: https://doi.org/10.5281/zenodo.21964209
 
-CSV files from that release are in `data/agora/` (`documents.csv`, `segments.csv`, `authorities.csv`, `collections.csv`).
+CSV files from that release are in `data/agora/` (`documents.csv`, `segments.csv`, `authorities.csv`, `collections.csv`). The analysis reads the document and authority tables. `segments.csv` and `collections.csv` are in the folder because they came with the release. The NDAA check uses the Collections column on `documents.csv`, not `collections.csv`.
 
 ETO Resources, including this dataset, are licensed under [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/), per the [ETO Terms of Use](https://eto.tech/tou). The AGORA dataset documentation states that the data are subject to those terms; users should cite ETO. The dataset includes full text of governance documents taken from official sources; ETO believes that material is open to non-commercial use consistent with the terms, but makes no warranties.
 

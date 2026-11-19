@@ -20,11 +20,13 @@ Does who issues an AI policy affect whether it gets enacted?
 
 **Null hypothesis (H0):** The issuing authority makes no difference to whether an AI policy is enacted.
 
-[text]
+I am asking this because Congress often deadlocks, while agencies can write rules without a statute. Those rules are also easier to undo. Since *Loper Bright* (2024), courts no longer defer to agencies on the law. In this AGORA extract, four agency AI rules went Defunct in 2025, including the 2023 AI executive order.
 
 ## Data
 
-[text]
+The data are AGORA v1.32.0, the AI GOvernance and Regulatory Archive from the Emerging Technology Observatory (ETO) at Georgetown. I use `documents.csv` and `authorities.csv`. Each row is one AGORA document. Big laws are split by AI section, so Congress has 364 rows from 177 bills.
+
+I keep US Congress, federal agencies and states. That is 1,126 of 1,251 rows. I drop Defunct, because the outcome is enacted or proposed. That leaves N = 706 (2017 to 2026). Treatment is federal agency (53) versus Congress (364). States (289) are context only. I do not add controls in the main comparison.
 
 ## A first look at the data
 
@@ -45,7 +47,7 @@ dim(table(documents$Authority))
 
 ## Coding the issuer
 
-[text]
+I match each document's authority to `Parent.authority` in `authorities.csv`. Congress is the United States Congress. Federal agencies are the other authorities whose parent is "Federal government". States have parent "State governments". Everything else is dropped (other countries, cities, and so on).
 
 ```{r}
 #| label: parent-group
@@ -75,7 +77,7 @@ table(documents$Authority[documents$issuer == "Federal agency"])
 
 ## Proposed and enacted
 
-[text]
+I keep Congress, federal agencies and states, then drop Defunct. The outcome `enacted` is 1 if Most recent activity is Enacted, and 0 if Proposed.
 
 ```{r}
 #| label: dropping-defunct
@@ -96,7 +98,7 @@ nrow(policies)
 
 ## Enacted by issuer
 
-[text]
+About nine in ten agency documents are enacted. Just over half of the Congress rows are enacted. States sit in between.
 
 ```{r}
 #| label: activity-counts
@@ -139,7 +141,7 @@ pct_enacted
 
 ## Federal agency vs Congress
 
-[text]
+The main comparison is agency minus Congress. The difference is 36.7 percentage points (95% CI 27.3 to 46.2). The z-statistic is 7.61, so I reject H0 at 5%. `lm()` gives the same slope. Its p-value is from a t-test, so it is larger than the z-test p-value, but the conclusion does not change.
 
 ```{r}
 #| label: difference-in-means
@@ -182,7 +184,7 @@ summary(fit)$coef
 
 ## Share enacted by issuer
 
-[text]
+The first chart is the share enacted. The second is raw counts. Most of the sample is Congress and the states. The agency group is small (n = 53).
 
 ```{r}
 #| label: save-figures
@@ -225,7 +227,7 @@ barplot(t(activity_counts), legend.text = TRUE,
 
 ## Checks
 
-[text]
+I run five checks. Counting Defunct as not enacted makes the gap larger (+57.5). Dropping the Executive Office of the President barely changes it (+37.6). On validated rows only the gap goes away (-3.2, p = 0.41). That check is weak: almost every validated Congress and agency row is already enacted. Dropping NDAA section rows cuts the Congress enacted share to 22.2% and the gap rises to +68.3. Holding constant whether the policy mainly applies to government, the agency coefficient in `lm()` is still positive.
 
 ```{r}
 #| label: check-defunct
@@ -284,6 +286,46 @@ diff_val / se_val
 2 * pnorm(-abs(diff_val / se_val))
 ```
 
+```{r}
+#| label: check-ndaa
+## check 4: without the NDAA rows
+policies$ndaa <- ifelse(grepl("NDAA", policies$Collections), 1, 0)
+table(policies$issuer, policies$ndaa)
+
+congress_no_ndaa <- policies$enacted[policies$issuer == "Congress" &
+                                     policies$ndaa == 0]
+length(congress_no_ndaa)
+100 * mean(congress_no_ndaa)
+
+diff_no_ndaa <- mean(agency) - mean(congress_no_ndaa)
+se_no_ndaa <- sqrt(var(agency) / length(agency) +
+                   var(congress_no_ndaa) / length(congress_no_ndaa))
+100 * diff_no_ndaa
+100 * (diff_no_ndaa - 1.96 * se_no_ndaa)
+100 * (diff_no_ndaa + 1.96 * se_no_ndaa)
+diff_no_ndaa / se_no_ndaa
+2 * pnorm(-abs(diff_no_ndaa / se_no_ndaa))
+```
+
+```{r}
+#| label: check-applies-gov
+## check 5: lm() also holding constant whether the policy mainly applies to government
+two_groups$applies_gov <- ifelse(two_groups$Primarily.applies.to.the.government == "true", 1, 0)
+table(two_groups$issuer, two_groups$applies_gov)
+
+fit_gov <- lm(enacted ~ agency + applies_gov, data = two_groups)
+fit_gov
+summary(fit_gov)$coef
+```
+
+## Text analysis
+
+I split the AGORA short summaries into words, drop short tokens, stop words, months, drafting words (act, bill, section, requires, and so on) and US state names. Each issuer is one bag of words. tf-idf is term frequency times log(3 / how many issuers use the word).
+
+Congress leans to director, congressional, navy, guard and coast. Agencies lean to ideological, icts, efficacy, labeling and similar words. States lean to sexual, media and generative. The word-share correlation with Congress is about 0.42 for agencies and 0.46 for states, so the issuers are not writing about the same things. That makes the "comparable groups" assumption shaky.
+
+Run the same steps in `analysis.R` (from the unique-bills line to the end) for the tables.
+
 ## Result
 
 ```{r}
@@ -294,16 +336,16 @@ round(100 * (diff_means - 1.96 * se_diff), 1)
 round(100 * (diff_means + 1.96 * se_diff), 1)
 ```
 
-Assuming [the treatment and control groups are comparable] (a reasonable assumption because [justification for the assumption]), we estimate that [the treatment] [increases/decreases] [outcome] by [size and unit of measurement of the effect] on average.
+Assuming Congress and agency AI documents are comparable (a reasonable assumption because both come from one tracker over overlapping years), we estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.
 
-[text]
+I would not lean on that assumption. The text analysis says the topics differ, and the validated-rows check shows no gap.
 
 ## Limitations
 
-[text]
+Issuers were not randomly assigned. Congress rows are bill sections, so they are not independent. 318 of 706 summaries may include unreviewed machine output. The agency n is 53. Next I would rerun with one row per bill and clustered standard errors.
 
 ## Policy implications
 
-[text]
+Agency AI policy is enacted far more often than Congress bills, and it is the easiest to undo. That leaves US AI governance on fragile ground. Congress should put core agency AI rules into statute. Trackers should flag rules open to reversal.
 
 Dataset citation: Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J., & Girard, T. (2026). AGORA Dataset (Version 1.32.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21964209
