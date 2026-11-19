@@ -2,15 +2,19 @@
 
 R code for my INTL 7007 (University of Georgia) data final. I ask whether who issues an AI policy is linked to whether it is enacted, using AGORA document and authority records.
 
-The printed poster is layout C. The interactive version of that poster is already live at https://tobynsmith.me/data/ (in the `tobyn-smith/me` repo). This repository is the R work behind it.
+The printed poster is layout C. The interactive version is at https://tobynsmith.me/data/ (in the `tobyn-smith/me` repo). This repository is the R work behind it.
 
-A longer, phone-only write-up sits in `poster/`. It is meant to be opened from a QR code on the printed poster, not from the rest of my site. Hosting for that page is in `tobyn-smith/me`, at https://tobynsmith.me/data/scan/. The print-quality QR files are `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`. They point at that URL.
+A longer, phone-only write-up sits in `poster/`. I open it from a QR code on the printed poster. It is hosted from `tobyn-smith/me` at https://tobynsmith.me/data/scan/. The print QR files are `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`. They point at that URL.
 
 The page is unlisted: `noindex, nofollow`, a `robots.txt` that disallows crawling, and no sitemap. It is not the same page as https://tobynsmith.me/data/.
 
 ## How to run
 
-You need R. The script uses base R only (`utils`, `stats`, `graphics`, `grDevices`). Quarto is optional, for `tobyn_data_final.qmd`.
+Requirements:
+
+- R
+- Base R packages only (`utils`, `stats`, `graphics`, `grDevices`). No additional packages are loaded.
+- Optional: [Quarto](https://quarto.org/) to render `tobyn_data_final.qmd`
 
 From the repository root:
 

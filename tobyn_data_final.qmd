@@ -20,9 +20,9 @@ Does who issues an AI policy affect whether it gets enacted?
 
 **Null hypothesis (H0):** The issuing authority makes no difference to whether an AI policy is enacted.
 
-In this AGORA extract, four agency AI rows have `Most.recent.activity` Defunct and a 2025 activity date, including the 2023 AI executive order (listed by `analysis.R`).
+In this AGORA extract, four agency AI rows have `Most.recent.activity` Defunct and a 2025 activity date, including the 2023 AI executive order.
 
-[Tobyn to write: Why does this research question matter for US AI policy? What, if anything, do gridlock, agency rulemaking, *Loper Bright* (2024), and those four Defunct rows have to do with the hypothesis?]
+[fill in later]
 
 ## Data
 
@@ -100,7 +100,7 @@ nrow(policies)
 
 ## Enacted by issuer
 
-Shares enacted in `policies` (chunk `activity-counts`): federal agency 90.56604%, Congress 53.84615%, state 75.43253%.
+Share enacted in the main sample: federal agency 90.56604%, Congress 53.84615%, state 75.43253%.
 
 ```{r}
 #| label: activity-counts
@@ -143,9 +143,9 @@ pct_enacted
 
 ## Federal agency vs Congress
 
-The comparison is mean(agency `enacted`) minus mean(Congress `enacted`). Chunk `difference-in-means`: 36.71988 points; 95% CI 27.26362 to 46.17615; z = 7.610931; two-sided p = 2.721295e-14; `2 * pnorm(-abs(z_obs)) < 0.05` is TRUE. Chunk `sentence-numbers` rounds that to 36.7 (27.3 to 46.2). Chunk `regression`: `lm(enacted ~ agency)` slope 0.3671988 (same difference as a proportion); t = 5.220443; p = 2.827761e-07.
+I compare mean(agency `enacted`) with mean(Congress `enacted`). The difference is 36.71988 points (95% CI 27.26362 to 46.17615). z = 7.610931. Two-sided p = 2.721295e-14. `2 * pnorm(-abs(z_obs)) < 0.05` is TRUE. Rounded: 36.7 (27.3 to 46.2). `lm(enacted ~ agency)` gives the same slope, 0.3671988. t = 5.220443. p = 2.827761e-07.
 
-[Tobyn to write: Do you reject H0 at 5%, and on which test (z or `lm()` t)? What does the 36.7 point gap describe, given that issuer is not randomly assigned?]
+[fill in later]
 
 ```{r}
 #| label: difference-in-means
@@ -188,7 +188,7 @@ summary(fit)$coef
 
 ## Share enacted by issuer
 
-Chunk `pct-enacted-chart` plots `pct_enacted`. Chunk `counts-chart` plots `activity_counts`. Row n in `policies`: Congress 364, federal agency 53, state 289.
+The first chart is the share enacted. The second is raw counts. Congress n = 364. Federal agency n = 53. State n = 289.
 
 ```{r}
 #| label: save-figures
@@ -231,15 +231,15 @@ barplot(t(activity_counts), legend.text = TRUE,
 
 ## Checks
 
-Five checks. Numbers from the chunks below:
+I run five checks.
 
-- Chunk `check-defunct` (Defunct kept; `enacted` = 1 only if Enacted): agency n = 57, Congress n = 735; difference 57.54386 points; 95% CI 47.47171 to 67.61601; z = 11.1978; p = 4.17978e-29.
-- Chunk `check-no-eop` (drop Executive Office of the President from agency): agency n = 35; difference 37.58242 points; 95% CI 26.86577 to 48.29907; z = 6.873559; p = 6.261965e-12.
-- Chunk `check-validated` (`Validated. == "true"`): Congress Enacted 159, Proposed 1; federal agency Enacted 25, Proposed 1; agency n = 26, Congress n = 160; difference −3.221154 points; 95% CI −10.8585 to 4.41619; z = −0.8266567; p = 0.4084317.
-- Chunk `check-ndaa` (drop rows with `NDAA` in `Collections`): NDAA rows are Congress 148, agency 0, state 0; Congress without NDAA n = 216, enacted share 22.22222%; difference 68.34382 points; 95% CI 58.6483 to 78.03933; z = 13.81607; p = 2.039083e-43.
-- Chunk `check-applies-gov`: `lm(enacted ~ agency + applies_gov)`; `agency` 0.4923000 (SE 0.04458397, t = 11.042085, p = 5.073422e-25); `applies_gov` 0.7492864 (SE 0.02980550, t = 25.139196, p = 2.397216e-85).
+- Defunct counted as not enacted: agency n = 57, Congress n = 735; difference 57.54386 points; 95% CI 47.47171 to 67.61601; z = 11.1978; p = 4.17978e-29.
+- Without the Executive Office of the President: agency n = 35; difference 37.58242 points; 95% CI 26.86577 to 48.29907; z = 6.873559; p = 6.261965e-12.
+- Validated rows only (`Validated. == "true"`): Congress Enacted 159, Proposed 1; federal agency Enacted 25, Proposed 1; agency n = 26, Congress n = 160; difference −3.221154 points; 95% CI −10.8585 to 4.41619; z = −0.8266567; p = 0.4084317.
+- Without NDAA rows (`NDAA` in `Collections`): NDAA rows are Congress 148, agency 0, state 0; Congress without NDAA n = 216, enacted share 22.22222%; difference 68.34382 points; 95% CI 58.6483 to 78.03933; z = 13.81607; p = 2.039083e-43.
+- `lm(enacted ~ agency + applies_gov)`: `agency` 0.4923000 (SE 0.04458397, t = 11.042085, p = 5.073422e-25); `applies_gov` 0.7492864 (SE 0.02980550, t = 25.139196, p = 2.397216e-85).
 
-[Tobyn to write: What does each check do to how you read the main 36.7 point gap? For check 3, what do you make of 159/160 validated Congress rows already being Enacted? For check 4, what does 148 NDAA section rows do to treating a Congress row as a bill?]
+[fill in later]
 
 ```{r}
 #| label: check-defunct
@@ -332,11 +332,11 @@ summary(fit_gov)$coef
 
 ## Text analysis
 
-Method in `analysis.R` (after the unique-bills line): split `Short.summary` into letters-only tokens of length at least 3; drop the stop, month, drafting, and US state list in `stops`; treat each issuer as one bag of words; tf-idf = (count / issuer total) × log(3 / how many issuers use the word). Tables are printed by `analysis.R`, not by a chunk in this file.
+I split the short summaries in `analysis.R`. Tokens are letters only and at least 3 characters. I drop the stop, month, drafting and US state list in `stops`. Each issuer is one bag of words. tf-idf is (count / issuer total) times log(3 / how many issuers use the word). The tables print from `analysis.R`.
 
-From that printout: token totals Congress 8,258, federal agency 1,366, state 7,031. Highest tf-idf, Congress: director 0.005587517, congressional 0.003059831, navy 0.002261614, guard 0.001995542, coast 0.001862506. Highest tf-idf, agency: efficacy, hazard, icts, ideological, labeling, rate each 0.003217020. Highest tf-idf, state: sexual 0.002343790, generative 0.002133723, media 0.002133723. Word-share correlation, Congress vs agency: 0.4242353 (480 shared words). Congress vs state: 0.4558262 (917 shared words).
+Token totals: Congress 8,258, federal agency 1,366, state 7,031. Highest tf-idf, Congress: director 0.005587517, congressional 0.003059831, navy 0.002261614, guard 0.001995542, coast 0.001862506. Highest tf-idf, agency: efficacy, hazard, icts, ideological, labeling, rate each 0.003217020. Highest tf-idf, state: sexual 0.002343790, generative 0.002133723, media 0.002133723. Word-share correlation, Congress vs agency: 0.4242353 (480 shared words). Congress vs state: 0.4558262 (917 shared words).
 
-[Tobyn to write: What do these top words and the two correlations say about whether Congress and agency summaries cover the same topics, and about the comparable-groups assumption in the difference-in-means?]
+[fill in later]
 
 ## Result
 
@@ -348,18 +348,18 @@ round(100 * (diff_means - 1.96 * se_diff), 1)
 round(100 * (diff_means + 1.96 * se_diff), 1)
 ```
 
-Chunk `sentence-numbers` prints 36.7, 27.3, and 46.2.
+The rounded difference is 36.7 points (95% CI 27.3 to 46.2).
 
-[Tobyn to write: Fill the Llaudet-style sentence yourself. Are Congress and agency rows comparable? If you use the 36.7 point figure as an average difference, what does it describe, and what does it not?]
+[fill in later]
 
 ## Limitations
 
-Facts from the sample: issuers were not randomly assigned; Congress rows can be sections of the same bill (177 unique `Link.to.document` among 364 Congress rows); 318 of 706 `policies` rows have `Summaries.and.tags.may.include.unreviewed.machine.output == "true"`; agency n = 53.
+Issuers were not randomly assigned. Congress has 177 unique `Link.to.document` values among 364 rows. 318 of 706 `policies` rows have `Summaries.and.tags.may.include.unreviewed.machine.output == "true"`. Agency n = 53.
 
-[Tobyn to write: Which of those facts limit the main comparison, and what would you run next (for example one row per bill, or clustered standard errors)?]
+[fill in later]
 
 ## Policy implications
 
-[Tobyn to write: What, if anything, do the enactment shares (agency 90.6%, Congress 53.8%) and the four 2025 Defunct agency rows imply for US AI governance? What, if anything, would you want Congress or a tracker to do that these tables can support?]
+[fill in later]
 
 Dataset citation: Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J., & Girard, T. (2026). AGORA Dataset (Version 1.32.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21964209
