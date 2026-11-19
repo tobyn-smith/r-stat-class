@@ -134,7 +134,7 @@ Not in the repo yet (methods mark): a named Track 1 or Track 2 methods note; a b
 
 ---
 
-## Results (20) — numbers only
+## Results (20), numbers only
 
 Main sample shares (chunk `activity-counts` and `group-intervals`):
 
