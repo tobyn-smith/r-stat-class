@@ -277,3 +277,103 @@ axis(2, at = 5:1, labels = labels, las = 1, cex.axis = 1.35, tick = FALSE)
 text(est, 5:1 + 0.28, paste0(sprintf("%+.1f", est)), cex = 1.4, font = 2,
      xpd = TRUE)
 dev.off()
+
+## unique Congress bills (one link can cover several section rows)
+length(unique(policies$Link.to.document[policies$issuer == "Congress"]))
+
+## summaries that may include unreviewed machine output
+table(policies$Summaries.and.tags.may.include.unreviewed.machine.output)
+sum(policies$Summaries.and.tags.may.include.unreviewed.machine.output == "true")
+
+## the four federal agency rows that went Defunct
+defunct_agency <- issuers[issuers$issuer == "Federal agency" &
+                          issuers$Most.recent.activity == "Defunct", ]
+defunct_agency[, c("Official.name", "Authority",
+                   "Proposed.date", "Most.recent.activity.date")]
+
+## text analysis of the short summaries
+## drop stop words, months, drafting words and US state names
+stops <- c(
+  "a", "about", "after", "again", "against", "all", "also", "an", "and", "any",
+  "are", "as", "at", "be", "because", "been", "before", "being", "between",
+  "both", "but", "by", "can", "did", "do", "does", "doing", "down", "during",
+  "each", "few", "for", "from", "further", "had", "has", "have", "having",
+  "he", "her", "here", "hers", "herself", "him", "himself", "his", "how",
+  "i", "if", "in", "into", "is", "it", "its", "itself", "just", "me", "more",
+  "most", "my", "myself", "no", "nor", "not", "now", "of", "off", "on",
+  "once", "only", "or", "other", "our", "ours", "ourselves", "out", "over",
+  "own", "same", "she", "should", "so", "some", "such", "than", "that",
+  "the", "their", "theirs", "them", "themselves", "then", "there", "these",
+  "they", "this", "those", "through", "to", "too", "under", "until", "up",
+  "very", "was", "we", "were", "what", "when", "where", "which", "while",
+  "who", "whom", "why", "will", "with", "you", "your", "yours", "yourself",
+  "yourselves",
+  "january", "february", "march", "april", "may", "june", "july", "august",
+  "september", "october", "november", "december",
+  "act", "acts", "bill", "bills", "section", "sections", "title", "titles",
+  "law", "laws", "requires", "require", "establishes", "establish",
+  "amends", "amend", "directs", "authorizes", "provides", "provide",
+  "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
+  "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
+  "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana", "maine",
+  "maryland", "massachusetts", "michigan", "minnesota", "mississippi",
+  "missouri", "montana", "nebraska", "nevada", "ohio", "oklahoma", "oregon",
+  "pennsylvania", "tennessee", "texas", "utah", "vermont", "virginia",
+  "washington", "wisconsin", "wyoming", "hampshire", "jersey", "mexico",
+  "york", "carolina", "dakota", "columbia", "rhode"
+)
+
+clean_words <- function(text) {
+  text <- tolower(paste(text, collapse = " "))
+  text <- gsub("[^a-z]+", " ", text)
+  words <- unlist(strsplit(text, " "))
+  words <- words[words != ""]
+  words <- words[nchar(words) >= 3]
+  words[!(words %in% stops)]
+}
+
+congress_words <- clean_words(policies$Short.summary[policies$issuer == "Congress"])
+agency_words <- clean_words(policies$Short.summary[policies$issuer == "Federal agency"])
+state_words <- clean_words(policies$Short.summary[policies$issuer == "State"])
+
+congress_tab <- sort(table(congress_words), decreasing = TRUE)
+agency_tab <- sort(table(agency_words), decreasing = TRUE)
+state_tab <- sort(table(state_words), decreasing = TRUE)
+
+length(congress_words)
+length(agency_words)
+length(state_words)
+head(congress_tab, 10)
+head(agency_tab, 10)
+head(state_tab, 10)
+
+## tf-idf, treating each issuer as one bag of words
+## tf = count / total words; idf = log(3 / how many issuers use the word)
+all_words <- unique(c(names(congress_tab), names(agency_tab), names(state_tab)))
+n_issuers <- (all_words %in% names(congress_tab)) +
+  (all_words %in% names(agency_tab)) +
+  (all_words %in% names(state_tab))
+idf <- log(3 / n_issuers)
+names(idf) <- all_words
+
+congress_tfidf <- sort((as.numeric(congress_tab) / length(congress_words)) *
+                       idf[names(congress_tab)], decreasing = TRUE)
+agency_tfidf <- sort((as.numeric(agency_tab) / length(agency_words)) *
+                     idf[names(agency_tab)], decreasing = TRUE)
+state_tfidf <- sort((as.numeric(state_tab) / length(state_words)) *
+                    idf[names(state_tab)], decreasing = TRUE)
+
+head(congress_tfidf, 10)
+head(agency_tfidf, 10)
+head(state_tfidf, 10)
+
+## how alike is the language? word shares for words used by both issuers
+shared_ca <- intersect(names(congress_tab), names(agency_tab))
+cor(as.numeric(congress_tab[shared_ca]) / length(congress_words),
+    as.numeric(agency_tab[shared_ca]) / length(agency_words))
+length(shared_ca)
+
+shared_cs <- intersect(names(congress_tab), names(state_tab))
+cor(as.numeric(congress_tab[shared_cs]) / length(congress_words),
+    as.numeric(state_tab[shared_cs]) / length(state_words))
+length(shared_cs)

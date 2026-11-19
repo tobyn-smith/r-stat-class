@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>US AI policy gets enacted where it is easiest to undo</title>
+<meta name="author" content="Tobyn Smith">
+<meta name="description" content="Phone-only notes for the INTL 7007 poster. Scan the QR code on the printed poster.">
+<meta name="theme-color" content="#3B5571">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,600;6..72,700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<p class="desktop-note">This page is for a phone. Scan the QR code on the printed poster.</p>
+
+<article class="phone">
+<header class="head">
+ <p class="kicker">INTL 7007 · University of Georgia</p>
+ <h1>US AI policy gets enacted where it is easiest to undo</h1>
+ <p class="byline"><b>Tobyn Smith</b>, <a href="mailto:tobynsmith@uga.edu">tobynsmith@uga.edu</a></p>
+</header>
+
+<section>
+ <h2>Research question</h2>
+ <div class="panel">
+  <p><b>Does who issues an AI policy affect whether it gets enacted?</b></p>
+  <p><b>H1.</b> AI policies issued by federal agencies are more likely to be enacted than AI bills introduced in Congress.</p>
+  <p><b>H0.</b> The issuing authority makes no difference to whether an AI policy is enacted.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Why it matters</h2>
+ <div class="panel">
+  <p>Congress often deadlocks (Binder, 1999). Agency rules skip Congress, and a new administration can undo them.</p>
+  <p>Since <i>Loper Bright</i> (2024), courts no longer defer to agencies on the law.</p>
+  <p>In 2025, four agency AI rules here went Defunct, including the 2023 AI executive order.</p>
+  <ul>
+   <li>Executive Order on the Safe, Secure, and Trustworthy Development and Use of Artificial Intelligence (Executive Office of the President), 2023-10-30 to 2025-01-20.</li>
+   <li>Advancing Governance, Innovation, and Risk Management for Agency Use of Artificial Intelligence (OMB), 2024-03-28 to 2025-04-03.</li>
+   <li>Advancing the Responsible Acquisition of Artificial Intelligence in Government (OMB), 2024-10-03 to 2025-04-03.</li>
+   <li>Framework for Artificial Intelligence Diffusion (Department of Commerce), 2025-01-13 to 2025-05-13.</li>
+  </ul>
+ </div>
+</section>
+
+<section>
+ <h2>Data</h2>
+ <div class="panel">
+  <p>AGORA v1.32.0, Emerging Technology Observatory. One row is one AGORA document. Big laws are split by AI section.</p>
+  <p>US federal and state, 2017 to 2026. I keep Congress, federal agencies and states (1,126 of 1,251 rows), then drop Defunct. <b>N = 706</b>.</p>
+  <p>Outcome: enacted (1) or proposed (0). Treatment: federal agency (53) versus Congress (364, from 177 bills). States (289) are context only. No extra controls in the main comparison.</p>
+  <p>How the sample was built: 1,251 documents → 125 other authorities dropped → 420 Defunct dropped (Congress 371, agencies 4, states 45) → 706 left.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Method</h2>
+ <div class="panel">
+  <p>Difference in proportions (agency minus Congress) with a 95% CI and a z-test. Same slope from <code>lm(enacted ~ agency)</code>.</p>
+  <p>Federal agencies: 48 of 53 enacted = 90.57%.</p>
+  <p>Congress: 196 of 364 enacted = 53.85%.</p>
+  <p>Difference: 90.57 − 53.85 = 36.72 points. 95% CI 27.26 to 46.18. z = 7.61; p &lt; 0.001.</p>
+ </div>
+</section>
+
+<section class="keyf">
+ <p>Agency AI policy is enacted far more often than Congress bills, and is the easiest to undo.</p>
+</section>
+
+<section>
+ <h2>Figure 1</h2>
+ <div class="panel fig">
+  <div class="chips" role="group" aria-label="Highlight in Figure 1">
+   <span class="chips-lab">Highlight:</span>
+   <button type="button" class="chip" data-hl="all" aria-pressed="true">All</button>
+   <button type="button" class="chip" data-hl="1" aria-pressed="false">Enacted</button>
+   <button type="button" class="chip" data-hl="0" aria-pressed="false">Proposed</button>
+  </div>
+  <div class="chart" id="figC"></div>
+  <div class="readout" id="readC" aria-live="polite"></div>
+  <p class="cap"><b>Figure 1.</b> Each square is one AGORA row. Defunct dropped (N = 706).</p>
+ </div>
+</section>
+
+<section>
+ <h2>Main result</h2>
+ <div class="panel">
+  <p class="num">+36.7</p>
+  <p>points (95% CI 27.3 to 46.2; z = 7.61; p &lt; 0.001).</p>
+  <p>Nine in ten agency policies were enacted, against over half of Congress rows.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Checks</h2>
+ <div class="panel">
+  <p>Defunct counted as not enacted: <b>+57.5</b> (CI 47.5 to 67.6).</p>
+  <p>Without the Executive Office of the President: <b>+37.6</b> (CI 26.9 to 48.3).</p>
+  <p>Validated rows only: <b>−3.2</b> (CI −10.9 to 4.4; p = 0.41). This check is weak. 159 of 160 validated Congress rows are already enacted.</p>
+  <p>Without NDAA section rows: Congress enacted share falls to 22.2%, and the gap is <b>+68.3</b> (CI 58.6 to 78.0). One law can add many enacted Congress rows.</p>
+  <p>Holding constant whether the policy mainly applies to government, the agency coefficient in <code>lm()</code> is still 0.49.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Text analysis</h2>
+ <div class="panel">
+  <p>The printed poster only had room for a short note. The charts below use AGORA short summaries. I drop stop words, months, drafting words and US state names. Each issuer is one bag of words. tf-idf is term frequency times log(3 / how many issuers use the word).</p>
+  <p>Congress leans to director, congressional, navy, guard and coast. Agencies lean to ideological, icts, efficacy and labeling. States lean to sexual, media and generative.</p>
+  <p>The word-share correlation with Congress is 0.43 for agencies and 0.46 for states on these charts (the R script in the repo, with a slightly shorter stop list, gives 0.42 and 0.46). The issuers are not writing about the same things. That makes the comparable-groups assumption shaky.</p>
+ </div>
+ <div class="panel fig">
+  <h3>Words that set each issuer apart</h3>
+  <div class="chips" role="group" aria-label="Issuer">
+   <button type="button" class="chip" data-tf="Congress" aria-pressed="true">Congress</button>
+   <button type="button" class="chip" data-tf="Federal agency" aria-pressed="false">Federal agency</button>
+   <button type="button" class="chip" data-tf="State" aria-pressed="false">State</button>
+  </div>
+  <div class="chart" id="figTF"></div>
+  <div class="readout" id="readTF" aria-live="polite"></div>
+  <p class="cap">Top ten words by tf-idf. Source: AGORA v1.32.0 short summaries.</p>
+ </div>
+ <div class="panel fig">
+  <h3>How alike is the language?</h3>
+  <div class="chips" role="group" aria-label="Comparison">
+   <button type="button" class="chip" data-sc="Federal agency" aria-pressed="true">Congress vs federal agency</button>
+   <button type="button" class="chip" data-sc="State" aria-pressed="false">Congress vs state</button>
+  </div>
+  <label class="find"><span>Find a word</span>
+   <input type="search" id="findword" autocomplete="off" spellcheck="false" list="wordlist">
+  </label>
+  <datalist id="wordlist"></datalist>
+  <div class="chart" id="figSC"></div>
+  <div class="readout" id="readSC" aria-live="polite"></div>
+  <p class="cap">Each dot is a word used by both issuers. Words far from the dashed line lean to one side.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Interpretation</h2>
+ <div class="panel">
+  <p>Assuming Congress and agency AI documents are comparable (a reasonable assumption because both come from one tracker over overlapping years), we estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
+  <p>I would not lean on that assumption. The issuers cover different topics, and validated rows show no gap.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Policy implications</h2>
+ <div class="panel">
+  <p>That leaves US AI governance on fragile ground.</p>
+  <p>Congress should put core agency AI rules into statute. Trackers should flag rules open to reversal.</p>
+ </div>
+</section>
+
+<section>
+ <h2>Limitations</h2>
+ <div class="panel">
+  <p>Issuers were not randomly assigned.</p>
+  <p>Congress rows are bill sections, which are not independent.</p>
+  <p>318 of 706 summaries may include unreviewed machine output.</p>
+  <p>The agency group is small (n = 53).</p>
+  <p>Next: one row per bill, and clustered standard errors.</p>
+ </div>
+</section>
+
+<section>
+ <h2>References</h2>
+ <div class="panel refs">
+  <p>Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J. and Girard, T. (2026). <i>AGORA Dataset</i> (Version 1.32.0). Zenodo. <a href="https://doi.org/10.5281/zenodo.21964209">https://doi.org/10.5281/zenodo.21964209</a></p>
+  <p>Binder, S. A. (1999). The Dynamics of Legislative Gridlock, 1947–96. <i>American Political Science Review</i>, 93(3), 519–533. <a href="https://doi.org/10.2307/2585572">https://doi.org/10.2307/2585572</a></p>
+  <p>Llaudet, E. and Imai, K. (2022). <i>Data Analysis for Social Science</i>. Princeton University Press.</p>
+  <p><i>Loper Bright Enterprises v. Raimondo</i>, 603 U.S. 369 (2024).</p>
+ </div>
+</section>
+
+<p class="foot">Code and data: <a href="https://github.com/tobyn-smith/r-stat-class">github.com/tobyn-smith/r-stat-class</a>. This page is not linked from the rest of the site. It is only for people who scan the poster.</p>
+</article>
+<div class="tip" id="tip" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
