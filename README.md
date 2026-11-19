@@ -4,9 +4,9 @@ R code for my INTL 7007 (University of Georgia) data final. I ask whether who is
 
 The printed poster is layout C. The interactive version of that poster is already live at https://tobynsmith.me/data/ (in the `tobyn-smith/me` repo). This repository is the R work behind it.
 
-A longer, phone-only write-up sits in `poster/`. It is meant to be opened from a QR code on the printed poster, not from the rest of my site. The print-quality QR files are `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`. They point at https://tobyn-smith.github.io/r-stat-class/
+A longer, phone-only write-up sits in `poster/`. It is meant to be opened from a QR code on the printed poster, not from the rest of my site. Hosting for that page is in `tobyn-smith/me`, at https://tobynsmith.me/data/scan/. The print-quality QR files are `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`. They point at that URL.
 
-I used GitHub Pages on this repo, with `poster/` as the site root, so I did not have to change https://tobynsmith.me/data/. The page is unlisted: `noindex, nofollow`, a `robots.txt` that disallows crawling, and no sitemap.
+The page is unlisted: `noindex, nofollow`, a `robots.txt` that disallows crawling, and no sitemap. It is not the same page as https://tobynsmith.me/data/.
 
 ## How to run
 

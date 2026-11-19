@@ -30,17 +30,16 @@ What I found, what I changed, and what still needs a decision. Numbers below are
 
 ## Hosting
 
-- Phone page lives in `poster/` and is meant for GitHub Pages on this repo: https://tobyn-smith.github.io/r-stat-class/
-- I did **not** change https://tobynsmith.me/data/.
-- QR files: `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`.
+- Phone page files live in `poster/` in this repo. They are hosted from `tobyn-smith/me` at https://tobynsmith.me/data/scan/.
+- I did **not** change https://tobynsmith.me/data/ (layout C interactive poster).
+- QR files: `poster/qr/poster-phone.svg` and `poster/qr/poster-phone.png`. Both decode to https://tobynsmith.me/data/scan/.
+- No GitHub Pages workflow on this repo.
 
 ## Open decisions
 
 1. **r = 0.43 (printed poster) versus 0.42 (`analysis.R`).** Pick one before Monday if both will be seen together.
-2. **Turn on GitHub Pages** for this repo (Actions source, `poster/` deployed by `.github/workflows/pages.yml`) if it is not on already. Until that is on, the QR URL will 404.
-3. **Put the phone page on tobynsmith.me instead** (for example `/data/scan/`), still unlisted. I did not do that, because it would be a second repo and I was asked not to touch `/data/` without saying so.
-4. **Whether to update `/data/`** so the printed interactive poster and this R script tell the same story on text analysis. I left it alone.
-5. **History name `tobyn` versus `tobyn-smith`.** Changing the old commit would need a rewrite and a force-push. I left it.
+2. **Whether to update `/data/`** so the printed interactive poster and this R script tell the same story on text analysis. I left it alone.
+3. **History name `tobyn` versus `tobyn-smith`.** Changing the old commit would need a rewrite and a force-push. I left it.
 
 ## R style I matched
 
