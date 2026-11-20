@@ -110,20 +110,8 @@
 <section>
  <h2>Text analysis</h2>
  <div class="panel">
-  <p>The printed poster only had room for a short note. The charts below use AGORA short summaries. I drop stop words, months, drafting words and US state names. Each issuer is one bag of words. tf-idf is term frequency times log(3 / how many issuers use the word).</p>
-  <p>Congress leans to director, congressional, navy, guard and coast. Agencies lean to ideological, icts, efficacy and labeling. States lean to sexual, media and generative.</p>
-  <p>The word-share correlation with Congress is 0.43 for agencies and 0.46 for states on these charts. In <code>analysis.R</code>, with a slightly shorter stop list, I get 0.42 and 0.46. The issuers are not writing about the same things. That makes the comparable-groups assumption shaky.</p>
- </div>
- <div class="panel fig">
-  <h3>Words that set each issuer apart</h3>
-  <div class="chips" role="group" aria-label="Issuer">
-   <button type="button" class="chip" data-tf="Congress" aria-pressed="true">Congress</button>
-   <button type="button" class="chip" data-tf="Federal agency" aria-pressed="false">Federal agency</button>
-   <button type="button" class="chip" data-tf="State" aria-pressed="false">State</button>
-  </div>
-  <div class="chart" id="figTF"></div>
-  <div class="readout" id="readTF" aria-live="polite"></div>
-  <p class="cap">Top ten words by tf-idf. Source: AGORA v1.32.0 short summaries.</p>
+  <p>The printed poster only had room for a short note. The chart below uses AGORA short summaries. I drop stop words, months, drafting words and US state names. Each issuer is one bag of words. For words used by both issuers I correlate the word shares with <code>cor()</code> and <code>cor.test()</code>.</p>
+  <p>On these charts the word-share correlation with Congress is 0.43 for agencies and 0.46 for states. In <code>analysis.R</code> I get r = 0.42 (95% CI 0.35 to 0.49, p &lt; 0.001) for agencies and r = 0.46 (95% CI 0.40 to 0.51, p &lt; 0.001) for states. The issuers are not writing about the same things. That makes the comparable-groups assumption shaky.</p>
  </div>
  <div class="panel fig">
   <h3>How alike is the language?</h3>
@@ -174,7 +162,27 @@
   <p>Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J. and Girard, T. (2026). <i>AGORA Dataset</i> (Version 1.32.0). Zenodo. <a href="https://doi.org/10.5281/zenodo.21964209">https://doi.org/10.5281/zenodo.21964209</a></p>
   <p>Binder, S. A. (1999). The Dynamics of Legislative Gridlock, 1947–96. <i>American Political Science Review</i>, 93(3), 519–533. <a href="https://doi.org/10.2307/2585572">https://doi.org/10.2307/2585572</a></p>
   <p>Llaudet, E. and Imai, K. (2022). <i>Data Analysis for Social Science</i>. Princeton University Press.</p>
+  <p>Silge, J. and Robinson, D. (2017). <i>Text Mining with R</i>. O'Reilly. Chapters 1 and 2.</p>
   <p><i>Loper Bright Enterprises v. Raimondo</i>, 603 U.S. 369 (2024).</p>
+ </div>
+</section>
+
+<section>
+ <h2>Appendix</h2>
+ <div class="panel">
+  <p>This tf-idf step is an extra step beyond Silge and Robinson chapters 1 and 2.</p>
+  <p>tf-idf is term frequency times log(3 / how many issuers use the word). Congress leans to director, congressional, navy, guard and coast. Agencies lean to ideological, icts, efficacy and labeling. States lean to sexual, media and generative.</p>
+ </div>
+ <div class="panel fig">
+  <h3>Words that set each issuer apart</h3>
+  <div class="chips" role="group" aria-label="Issuer">
+   <button type="button" class="chip" data-tf="Congress" aria-pressed="true">Congress</button>
+   <button type="button" class="chip" data-tf="Federal agency" aria-pressed="false">Federal agency</button>
+   <button type="button" class="chip" data-tf="State" aria-pressed="false">State</button>
+  </div>
+  <div class="chart" id="figTF"></div>
+  <div class="readout" id="readTF" aria-live="polite"></div>
+  <p class="cap">Top ten words by tf-idf. Source: AGORA v1.32.0 short summaries.</p>
  </div>
 </section>
 

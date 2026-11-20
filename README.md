@@ -23,7 +23,7 @@ mkdir -p figures
 Rscript analysis.R
 ```
 
-`analysis.R` reads `data/agora/documents.csv` and `data/agora/authorities.csv` and writes PNG figures to `figures/`. It also prints the text-analysis tables (word counts, tf-idf, and the word-share correlations).
+`analysis.R` reads `data/agora/documents.csv` and `data/agora/authorities.csv` and writes PNG figures to `figures/`. It also prints the word counts and the word-share correlations (`cor()` and `cor.test()`). An appendix prints the tf-idf table.
 
 To render the Quarto notebook:
 

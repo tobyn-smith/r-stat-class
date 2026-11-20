@@ -104,14 +104,10 @@ se_diff <- sqrt(var(treatment$enacted) / n_t + var(control$enacted) / n_c)
 100 * (diff_means - 1.96 * se_diff)
 100 * (diff_means + 1.96 * se_diff)
 
-## z-statistic and p-values
+## z-statistic and two-sided p-value
 z_obs <- diff_means / se_diff
 z_obs
 2 * pnorm(-abs(z_obs))
-pnorm(-z_obs)
-
-## reject H0 at 5%?
-2 * pnorm(-abs(z_obs)) < 0.05
 
 ## same comparison with lm()
 two_groups <- policies[policies$issuer != "State", ]
@@ -347,7 +343,30 @@ head(congress_tab, 10)
 head(agency_tab, 10)
 head(state_tab, 10)
 
-## tf-idf, treating each issuer as one bag of words
+## how alike is the language? word shares for words used by both issuers
+shared_ca <- intersect(names(congress_tab), names(agency_tab))
+congress_share_ca <- as.numeric(congress_tab[shared_ca]) / length(congress_words)
+agency_share_ca <- as.numeric(agency_tab[shared_ca]) / length(agency_words)
+cor(congress_share_ca, agency_share_ca)
+cor_ca <- cor.test(congress_share_ca, agency_share_ca)
+cor_ca
+cor_ca$estimate
+cor_ca$conf.int
+cor_ca$p.value
+length(shared_ca)
+
+shared_cs <- intersect(names(congress_tab), names(state_tab))
+congress_share_cs <- as.numeric(congress_tab[shared_cs]) / length(congress_words)
+state_share_cs <- as.numeric(state_tab[shared_cs]) / length(state_words)
+cor(congress_share_cs, state_share_cs)
+cor_cs <- cor.test(congress_share_cs, state_share_cs)
+cor_cs
+cor_cs$estimate
+cor_cs$conf.int
+cor_cs$p.value
+length(shared_cs)
+
+## Appendix: tf-idf (extra step, beyond the assigned chapters)
 ## tf = count / total words; idf = log(3 / how many issuers use the word)
 all_words <- unique(c(names(congress_tab), names(agency_tab), names(state_tab)))
 n_issuers <- (all_words %in% names(congress_tab)) +
@@ -367,13 +386,8 @@ head(congress_tfidf, 10)
 head(agency_tfidf, 10)
 head(state_tfidf, 10)
 
-## how alike is the language? word shares for words used by both issuers
-shared_ca <- intersect(names(congress_tab), names(agency_tab))
-cor(as.numeric(congress_tab[shared_ca]) / length(congress_words),
-    as.numeric(agency_tab[shared_ca]) / length(agency_words))
-length(shared_ca)
-
-shared_cs <- intersect(names(congress_tab), names(state_tab))
-cor(as.numeric(congress_tab[shared_cs]) / length(congress_words),
-    as.numeric(state_tab[shared_cs]) / length(state_words))
-length(shared_cs)
+png("figures/fig3_tfidf_congress.png",
+    width = 8, height = 5.5, units = "in", res = 300)
+barplot(head(congress_tfidf, 10), las = 2, ylab = "tf-idf",
+        main = "Highest tf-idf words, Congress")
+dev.off()

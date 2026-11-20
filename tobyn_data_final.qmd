@@ -143,7 +143,7 @@ pct_enacted
 
 ## Federal agency vs Congress
 
-I compare mean(agency `enacted`) with mean(Congress `enacted`). The difference is 36.71988 points (95% CI 27.26362 to 46.17615). z = 7.610931. Two-sided p = 2.721295e-14. `2 * pnorm(-abs(z_obs)) < 0.05` is TRUE. Rounded: 36.7 (27.3 to 46.2). `lm(enacted ~ agency)` gives the same slope, 0.3671988. t = 5.220443. p = 2.827761e-07.
+I compare mean(agency `enacted`) with mean(Congress `enacted`). The difference is 36.71988 points (95% CI 27.26362 to 46.17615). z = 7.610931. The two-sided p-value is `2 * pnorm(-abs(z_obs))` = 2.721295e-14. Rounded: 36.7 (27.3 to 46.2). `lm(enacted ~ agency)` gives the same slope, 0.3671988. t = 5.220443. p = 2.827761e-07.
 
 [fill in later]
 
@@ -166,14 +166,10 @@ se_diff <- sqrt(var(treatment$enacted) / n_t + var(control$enacted) / n_c)
 100 * (diff_means - 1.96 * se_diff)
 100 * (diff_means + 1.96 * se_diff)
 
-## z-statistic and p-values
+## z-statistic and two-sided p-value
 z_obs <- diff_means / se_diff
 z_obs
 2 * pnorm(-abs(z_obs))
-pnorm(-z_obs)
-
-## reject H0 at 5%?
-2 * pnorm(-abs(z_obs)) < 0.05
 ```
 
 ```{r}
@@ -332,11 +328,92 @@ summary(fit_gov)$coef
 
 ## Text analysis
 
-I split the short summaries in `analysis.R`. Tokens are letters only and at least 3 characters. I drop the stop, month, drafting and US state list in `stops`. Each issuer is one bag of words. tf-idf is (count / issuer total) times log(3 / how many issuers use the word). The tables print from `analysis.R`.
+I split the short summaries. Tokens are letters only and at least 3 characters. I drop the stop, month, drafting and US state list in `stops`. Each issuer is one bag of words. For words used by both issuers I correlate the word shares with `cor()` and `cor.test()`.
 
-Token totals: Congress 8,258, federal agency 1,366, state 7,031. Highest tf-idf, Congress: director 0.005587517, congressional 0.003059831, navy 0.002261614, guard 0.001995542, coast 0.001862506. Highest tf-idf, agency: efficacy, hazard, icts, ideological, labeling, rate each 0.003217020. Highest tf-idf, state: sexual 0.002343790, generative 0.002133723, media 0.002133723. Word-share correlation, Congress vs agency: 0.4242353 (480 shared words). Congress vs state: 0.4558262 (917 shared words).
+Token totals: Congress 8,258, federal agency 1,366, state 7,031. Congress vs agency: r = 0.4242353 (95% CI 0.3479461 to 0.4949432, p = 2.1625235e-22), 480 shared words. Congress vs state: r = 0.4558262 (95% CI 0.4029789 to 0.5056439, p = 3.0415644e-48), 917 shared words.
 
 [fill in later]
+
+```{r}
+#| label: text-words
+## drop stop words, months, drafting words and US state names
+stops <- c(
+  "a", "about", "after", "again", "against", "all", "also", "an", "and", "any",
+  "are", "as", "at", "be", "because", "been", "before", "being", "between",
+  "both", "but", "by", "can", "did", "do", "does", "doing", "down", "during",
+  "each", "few", "for", "from", "further", "had", "has", "have", "having",
+  "he", "her", "here", "hers", "herself", "him", "himself", "his", "how",
+  "i", "if", "in", "into", "is", "it", "its", "itself", "just", "me", "more",
+  "most", "my", "myself", "no", "nor", "not", "now", "of", "off", "on",
+  "once", "only", "or", "other", "our", "ours", "ourselves", "out", "over",
+  "own", "same", "she", "should", "so", "some", "such", "than", "that",
+  "the", "their", "theirs", "them", "themselves", "then", "there", "these",
+  "they", "this", "those", "through", "to", "too", "under", "until", "up",
+  "very", "was", "we", "were", "what", "when", "where", "which", "while",
+  "who", "whom", "why", "will", "with", "you", "your", "yours", "yourself",
+  "yourselves",
+  "january", "february", "march", "april", "may", "june", "july", "august",
+  "september", "october", "november", "december",
+  "act", "acts", "bill", "bills", "section", "sections", "title", "titles",
+  "law", "laws", "requires", "require", "establishes", "establish",
+  "amends", "amend", "directs", "authorizes", "provides", "provide",
+  "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
+  "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
+  "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana", "maine",
+  "maryland", "massachusetts", "michigan", "minnesota", "mississippi",
+  "missouri", "montana", "nebraska", "nevada", "ohio", "oklahoma", "oregon",
+  "pennsylvania", "tennessee", "texas", "utah", "vermont", "virginia",
+  "washington", "wisconsin", "wyoming", "hampshire", "jersey", "mexico",
+  "york", "carolina", "dakota", "columbia", "rhode"
+)
+
+clean_words <- function(text) {
+  text <- tolower(paste(text, collapse = " "))
+  text <- gsub("[^a-z]+", " ", text)
+  words <- unlist(strsplit(text, " "))
+  words <- words[words != ""]
+  words <- words[nchar(words) >= 3]
+  words[!(words %in% stops)]
+}
+
+congress_words <- clean_words(policies$Short.summary[policies$issuer == "Congress"])
+agency_words <- clean_words(policies$Short.summary[policies$issuer == "Federal agency"])
+state_words <- clean_words(policies$Short.summary[policies$issuer == "State"])
+
+congress_tab <- sort(table(congress_words), decreasing = TRUE)
+agency_tab <- sort(table(agency_words), decreasing = TRUE)
+state_tab <- sort(table(state_words), decreasing = TRUE)
+
+length(congress_words)
+length(agency_words)
+length(state_words)
+head(congress_tab, 10)
+head(agency_tab, 10)
+head(state_tab, 10)
+
+## how alike is the language? word shares for words used by both issuers
+shared_ca <- intersect(names(congress_tab), names(agency_tab))
+congress_share_ca <- as.numeric(congress_tab[shared_ca]) / length(congress_words)
+agency_share_ca <- as.numeric(agency_tab[shared_ca]) / length(agency_words)
+cor(congress_share_ca, agency_share_ca)
+cor_ca <- cor.test(congress_share_ca, agency_share_ca)
+cor_ca
+cor_ca$estimate
+cor_ca$conf.int
+cor_ca$p.value
+length(shared_ca)
+
+shared_cs <- intersect(names(congress_tab), names(state_tab))
+congress_share_cs <- as.numeric(congress_tab[shared_cs]) / length(congress_words)
+state_share_cs <- as.numeric(state_tab[shared_cs]) / length(state_words)
+cor(congress_share_cs, state_share_cs)
+cor_cs <- cor.test(congress_share_cs, state_share_cs)
+cor_cs
+cor_cs$estimate
+cor_cs$conf.int
+cor_cs$p.value
+length(shared_cs)
+```
 
 ## Result
 
@@ -362,4 +439,44 @@ Issuers were not randomly assigned. Congress has 177 unique `Link.to.document` v
 
 [fill in later]
 
-Dataset citation: Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J., & Girard, T. (2026). AGORA Dataset (Version 1.32.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21964209
+## References
+
+Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J., and Girard, T. (2026). AGORA Dataset (Version 1.32.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21964209
+
+Llaudet, E., and Imai, K. (2022). *Data analysis for social science: A friendly and practical introduction*. Princeton University Press.
+
+Silge, J., and Robinson, D. (2017). *Text mining with R: A tidy approach*. O'Reilly. Chapters 1 and 2.
+
+## Appendix
+
+This tf-idf step is an extra step beyond Silge and Robinson chapters 1 and 2.
+
+tf-idf is (count / issuer total) times log(3 / how many issuers use the word). Highest tf-idf, Congress: director 0.005587517, congressional 0.003059831, navy 0.002261614, guard 0.001995542, coast 0.001862506. Highest tf-idf, agency: efficacy, hazard, icts, ideological, labeling, rate each 0.003217020. Highest tf-idf, state: sexual 0.002343790, generative 0.002133723, media 0.002133723.
+
+```{r}
+#| label: appendix-tfidf
+#| fig-width: 7
+#| fig-height: 4.5
+## Appendix: tf-idf (extra step, beyond the assigned chapters)
+## tf = count / total words; idf = log(3 / how many issuers use the word)
+all_words <- unique(c(names(congress_tab), names(agency_tab), names(state_tab)))
+n_issuers <- (all_words %in% names(congress_tab)) +
+  (all_words %in% names(agency_tab)) +
+  (all_words %in% names(state_tab))
+idf <- log(3 / n_issuers)
+names(idf) <- all_words
+
+congress_tfidf <- sort((as.numeric(congress_tab) / length(congress_words)) *
+                       idf[names(congress_tab)], decreasing = TRUE)
+agency_tfidf <- sort((as.numeric(agency_tab) / length(agency_words)) *
+                     idf[names(agency_tab)], decreasing = TRUE)
+state_tfidf <- sort((as.numeric(state_tab) / length(state_words)) *
+                    idf[names(state_tab)], decreasing = TRUE)
+
+head(congress_tfidf, 10)
+head(agency_tfidf, 10)
+head(state_tfidf, 10)
+
+barplot(head(congress_tfidf, 10), las = 2, ylab = "tf-idf",
+        main = "Highest tf-idf words, Congress")
+```
