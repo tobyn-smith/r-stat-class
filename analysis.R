@@ -4,6 +4,9 @@
 ## H0: The issuing authority makes no difference to whether an AI policy is enacted.
 ## data: AGORA v1.32.0 (ETO), https://doi.org/10.5281/zenodo.21964209
 
+## packages
+library(ggplot2)
+
 ## loading the data
 documents <- read.csv("data/agora/documents.csv")
 authorities <- read.csv("data/agora/authorities.csv")
@@ -307,40 +310,98 @@ head(agency_tfidf, 10)
 head(state_tfidf, 10)
 
 ## figure 1: the gap with 95% CIs, main estimate and the three checks
-library(ggplot2)
+## colours from the poster: crimson, slate, grey, cream
+crimson <- "#BA0C2F"
+slate <- "#3B5571"
+cream <- "#F7F3EA"
 
 gap_ci <- data.frame(
   label = c("Main estimate",
-            "Defunct counted as not enacted",
-            "Without the Executive Office\nof the President",
+            "Defunct counted\nas not enacted",
+            "Without the Executive\nOffice of the President",
             "Validated rows only"),
+  type = c("Main", "Check", "Check", "Validated"),
   est = 100 * c(diff_means, diff_defunct, diff_no_eop, diff_val),
   se = 100 * c(se_diff, se_defunct, se_no_eop, se_val)
 )
 gap_ci$lo <- gap_ci$est - 1.96 * gap_ci$se
 gap_ci$hi <- gap_ci$est + 1.96 * gap_ci$se
 gap_ci$label <- factor(gap_ci$label, levels = rev(gap_ci$label))
-gap_ci$text <- sprintf("%+.1f (%.1f to %.1f)", gap_ci$est, gap_ci$lo, gap_ci$hi)
-gap_ci$text <- gsub("-", "\u2212", gap_ci$text)
+gap_ci$text <- sprintf("%+.1f", gap_ci$est)
+gap_ci$ci_text <- sprintf("(%.1f to %.1f)", gap_ci$lo, gap_ci$hi)
 gap_ci
 
-fig_gap <- ggplot(gap_ci, aes(x = est, y = label)) +
-  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey40", linewidth = 0.6) +
-  geom_errorbarh(aes(xmin = lo, xmax = hi), height = 0.25,
-                 colour = "#BA0C2F", linewidth = 1.1) +
-  geom_point(colour = "#BA0C2F", size = 5) +
-  geom_text(aes(label = text), vjust = -1.1, size = 5.6, family = "serif",
-            colour = "grey15") +
-  scale_x_continuous(limits = c(-20, 80), breaks = seq(-20, 80, 20)) +
-  labs(x = "Difference in share enacted (percentage points)", y = NULL) +
+fig_gap <- ggplot(gap_ci, aes(x = est, y = label, colour = type)) +
+  annotate("rect", xmin = gap_ci$lo[1], xmax = gap_ci$hi[1],
+           ymin = -Inf, ymax = Inf, fill = crimson, alpha = 0.10) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey35",
+             linewidth = 0.9) +
+  geom_errorbarh(aes(xmin = lo, xmax = hi, linewidth = type), height = 0) +
+  geom_point(aes(size = type)) +
+  geom_text(aes(x = hi, label = text), hjust = 0, nudge_x = 3,
+            vjust = -0.1, size = 10.5, family = "serif", fontface = "bold",
+            show.legend = FALSE) +
+  geom_text(aes(x = hi, label = ci_text), hjust = 0, nudge_x = 3,
+            vjust = 1.3, size = 7.2, family = "serif", colour = "grey25",
+            show.legend = FALSE) +
+  scale_colour_manual(values = c(Main = crimson, Check = slate,
+                                 Validated = "grey55")) +
+  scale_linewidth_manual(values = c(Main = 4.5, Check = 2.8, Validated = 2.8)) +
+  scale_size_manual(values = c(Main = 12, Check = 8, Validated = 8)) +
+  scale_x_continuous(limits = c(-20, 100), breaks = seq(-20, 80, 20),
+                     expand = c(0, 0)) +
+  labs(x = "Gap in share enacted, agency minus Congress (points)",
+       y = NULL) +
+  theme_minimal(base_size = 26, base_family = "serif") +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = cream, colour = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "grey85", linewidth = 0.5),
+        axis.text.y = element_text(colour = "grey10", size = 24,
+                                   lineheight = 0.9),
+        axis.text.x = element_text(colour = "grey30", size = 20),
+        axis.title.x = element_text(size = 20, colour = "grey20", hjust = 1,
+                                    margin = margin(t = 12)),
+        plot.margin = margin(18, 24, 14, 10))
+fig_gap
+
+ggsave("site/assets/fig_gap_ci.png", fig_gap, width = 11, height = 7.2,
+       dpi = 300, bg = cream)
+
+## appendix figure: share enacted by issuer with 95% CIs (not on the poster)
+share_ci <- data.frame(
+  issuer = c("Federal agency", "Congress", "State"),
+  n = c(length(agency), length(congress), length(state)),
+  est = 100 * c(mean(agency), mean(congress), mean(state)),
+  se = 100 * c(sqrt(var(agency) / length(agency)),
+               sqrt(var(congress) / length(congress)),
+               sqrt(var(state) / length(state)))
+)
+share_ci$lo <- share_ci$est - 1.96 * share_ci$se
+share_ci$hi <- share_ci$est + 1.96 * share_ci$se
+share_ci$issuer <- factor(share_ci$issuer, levels = share_ci$issuer)
+share_ci$text <- sprintf("%.1f%%\n(n = %d)", share_ci$est, share_ci$n)
+share_ci
+
+fig_share <- ggplot(share_ci, aes(x = issuer, y = est)) +
+  geom_col(fill = c(crimson, slate, "grey55"), width = 0.6) +
+  geom_errorbar(aes(ymin = lo, ymax = hi), width = 0.15, linewidth = 1.1,
+                colour = "grey15") +
+  geom_text(aes(y = hi, label = text), vjust = -0.3, size = 6,
+            family = "serif", lineheight = 0.9) +
+  scale_y_continuous(limits = c(0, 115), breaks = seq(0, 100, 25),
+                     expand = c(0, 0)) +
+  labs(x = NULL, y = "Share enacted (%)",
+       title = "Share of AI policies enacted by issuer, with 95% CIs",
+       caption = "Defunct rows dropped. Source: AGORA v1.32.0.") +
   theme_minimal(base_size = 20, base_family = "serif") +
   theme(plot.background = element_rect(fill = "white", colour = NA),
         panel.grid.minor = element_blank(),
-        panel.grid.major.y = element_blank(),
-        axis.text.y = element_text(colour = "grey10"),
-        axis.title.x = element_text(size = 19, margin = margin(t = 10)),
-        plot.margin = margin(10, 20, 10, 10))
-fig_gap
+        panel.grid.major.x = element_blank(),
+        plot.title.position = "plot")
+fig_share
 
-ggsave("site/assets/fig_gap_ci.png", fig_gap, width = 10.3, height = 5,
+dir.create("figures", showWarnings = FALSE)
+ggsave("figures/fig_share_by_issuer.png", fig_share, width = 10, height = 7,
        dpi = 300, bg = "white")

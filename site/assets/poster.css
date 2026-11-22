@@ -32,13 +32,15 @@ p:last-child{margin-bottom:0}
  .col{display:contents}
  .keyf,.keyban{order:-1}
 }
+/* four stacks: question and literature, data and method, key finding and figure, results and limitations */
+@media (max-width:899px){.policy{order:1}.limits{order:2}}
 @media (min-width:900px){
- .grid{grid-template-columns:minmax(0,10fr) minmax(0,13fr);grid-template-areas:"c1 c2" "c3 c2";align-items:start}
- .c1{grid-area:c1}.c2{grid-area:c2;grid-row:1 / span 2}.c3{grid-area:c3}
+ .grid{grid-template-columns:minmax(0,10fr) minmax(0,13fr);grid-template-areas:"c1 c3" "c2 c4";align-items:start}
+ .c1{grid-area:c1}.c2{grid-area:c2}.c3{grid-area:c3}.c4{grid-area:c4}
 }
 @media (min-width:1280px){
- .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);grid-template-areas:"c1 c2 c3"}
- .c2{grid-row:auto}
+ .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);grid-template-areas:"c1 c3 c4" "c2 c2 c2"}
+ .c2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);align-items:start}
 }
 
 /* boxes: white title strip over red body, as on the SPIA Canva template */
@@ -81,7 +83,7 @@ p:last-child{margin-bottom:0}
 .qrrow:hover .qrlab{text-decoration:underline}
 
 /* figure card */
-.figcard,.card{background:#fff;color:var(--ink);padding:18px;min-width:0}
+.figcard,.card{background:#F7F3EA;color:var(--ink);padding:18px;min-width:0}
 .card h3{font-weight:700;font-size:21px;line-height:1.3;margin:0 0 .6em;color:var(--black)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
 .chips-lab{font-weight:700;margin-right:2px}
@@ -192,10 +194,8 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 .mpanel .mdesc{font-style:italic;color:var(--muted);font-size:14px;line-height:1.35;margin:0}
 .mpanel code{font-size:.92em;font-style:normal}
 
-/* Key finding banner, as on the SPIA template */
-.keyban{background:var(--red);border:0;padding:18px 22px 20px;box-shadow:0 2px 6px rgba(0,0,0,.18)}
-.keyban .eyebrow{margin:0 0 .45em;font-size:14px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;opacity:.9}
-.keyban .sentence{color:#fff;font-weight:600}
+/* Key finding: same white title band as the other boxes */
+.keyban .sentence{color:#fff;font-weight:600;margin:0}
 /* caption sits straight under the chart */
 .figcard .cap{margin:12px 0 0;color:var(--muted)}
 /* QR codes inside Method and code */
@@ -211,3 +211,8 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 /* Figure 1 image and footnote line */
 .figimg{display:block;width:100%;height:auto}
 .qrfoot{font-size:16px;color:#fff;opacity:.9;line-height:1.5}
+
+/* References: full-width strip under the three columns */
+.refwrap{max-width:var(--max);margin:0 auto;padding:0 24px 24px}
+@media (min-width:900px){.refstrip .pb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 28px}.refstrip .pb p{margin:0 0 .5em}}
+@media (max-width:600px){.refwrap{padding:0 12px 16px}}
