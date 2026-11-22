@@ -12,7 +12,7 @@
 <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/sourceserifpro-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/sourceserifpro-bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/poster.css?v=4">
+<link rel="stylesheet" href="assets/poster.css?v=5">
 </head>
 <body>
 <header class="head">
@@ -97,7 +97,6 @@
  <section class="box">
   <h2>Method and code</h2>
   <div class="pb">
-<p><b>Excluded:</b> 420 Defunct rows, because [add later]. 125 other rows: [add later]</p>
 <p><b>Key assumption:</b> Congress and agency documents are comparable apart from who issued them, because [add later].</p>
 <div class="mpanels">
 <div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p class="mdesc">difference-in-means, 95% CI, two-sided test at 5%</p></div>
@@ -113,7 +112,9 @@
    <span class="qrlab"><b>Text analysis</b><br>tobynsmith.me/data/text</span>
   </a>
  </div>
- </section>
+ <p class="qrnote">I excluded the 420 &lsquo;defunct rows&rsquo; because they are neither enacted nor proposed. Even if included, they don&rsquo;t change the results.</p>
+<p class="qrnote">Also, there are 125 other rows issued by bodies outside of my three groups, including US cities, other countries and private companies.</p>
+</section>
 
  <section class="box">
   <h2>Policy implications</h2>
@@ -142,7 +143,7 @@
  <a class="print-pdf" href="poster_36x24.pdf" download="poster_36x24.pdf">Download PDF (36 x 24 in)</a>
 </nav>
 <div class="tip" id="tip" hidden></div>
-<script src="assets/poster.js?v=4"></script>
-<script src="assets/print-btn.js?v=4"></script>
+<script src="assets/poster.js?v=5"></script>
+<script src="assets/print-btn.js?v=5"></script>
 </body>
 </html>

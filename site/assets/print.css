@@ -91,3 +91,4 @@ html,body{width:36in;height:24in;overflow:hidden;background:var(--khaki);-webkit
 .print .box .qrbig img{width:140px;height:140px}
 .print,body.print{font-size:22px}
 .print .dtable{font-size:22px}
+.qrnote{margin-top:12px}
