@@ -68,7 +68,7 @@ html,body{width:36in;height:24in;overflow:hidden;background:var(--khaki);-webkit
 
 /* Three real columns, each a stack of boxes; boxes stretch so the column bottoms line up */
 /* Four stacks; widths tuned so the columns end level and the figure gets the widest column */
-.print .grid{display:grid !important;grid-template-columns:minmax(0,0.7fr) minmax(0,1.12fr) minmax(0,1.4fr) minmax(0,0.9fr) !important;grid-template-areas:"c1 c2 c3 c4" !important;grid-template-rows:auto !important}
+.print .grid{display:grid !important;grid-template-columns:minmax(0,0.8fr) minmax(0,1.12fr) minmax(0,1.15fr) minmax(0,1.05fr) !important;grid-template-areas:"c1 c2 c3 c4" !important;grid-template-rows:auto !important}
 .print .col{display:flex !important;flex-direction:column;justify-content:flex-start}
 .print .c1{grid-area:c1}.print .c2{grid-area:c2}.print .c3{grid-area:c3}.print .c4{grid-area:c4}
 .print .c3,.print .c4{grid-row:auto}
