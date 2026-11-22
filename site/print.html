@@ -13,7 +13,7 @@
 <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml"/>
 <link as="font" crossorigin="" href="assets/fonts/sourceserifpro-regular.woff2" rel="preload" type="font/woff2"/>
 <link as="font" crossorigin="" href="assets/fonts/sourceserifpro-bold.woff2" rel="preload" type="font/woff2"/>
-<link href="assets/poster.css?v=2" rel="stylesheet"/><link href="assets/print.css?v=2" rel="stylesheet"/>
+<link href="assets/poster.css?v=3" rel="stylesheet"/><link href="assets/print.css?v=3" rel="stylesheet"/>
 </head>
 <body class="print"><div id="sheet"><div id="poster"><header class="head">
 <div class="head-in">
@@ -55,18 +55,12 @@
    </dl>
 </div>
 </section>
-<section class="qrpanel">
-<a class="qrbig" href="https://github.com/tobyn-smith/r-stat-class">
-<img alt="QR code linking to github.com/tobyn-smith/r-stat-class" class="qrimg" height="370" src="assets/qr_code.svg" width="370"/>
-<span class="qrlab"><b>Code and data</b><br/><span class="nw">github.com/tobyn-smith/</span><wbr/><span class="nw">r-stat-class</span></span>
-</a>
-<a class="qrbig" href="text/">
-<img alt="QR code linking to tobynsmith.me/data/text" class="qrimg" height="370" src="assets/qr_text.svg" width="370"/>
-<span class="qrlab"><b>Text analysis</b><br/>tobynsmith.me/data/text</span>
-</a>
-</section>
 </div>
 <div class="col c2">
+<section class="sentence-card keyban" aria-label="Key finding">
+<p class="eyebrow">Key finding</p>
+<p class="sentence">Assuming Congress and agency AI documents are comparable (a strong assumption, because the issuers cover different topics), I estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
+</section>
 <section class="figcard">
 <div aria-label="Highlight in Figure 1" class="chips" role="group">
 <span class="chips-lab">Highlight:</span>
@@ -75,11 +69,8 @@
 <button aria-pressed="false" class="chip" data-hl="0" type="button">Proposed</button>
 </div>
 <div class="chart" id="figC"></div>
-<div aria-live="polite" class="readout" id="readC"></div>
-</section>
 <p class="cap"><b>Figure 1.</b> AI policy documents by issuer and status. Each square is one AGORA row; Defunct dropped (N = 706).</p>
-<section class="sentence-card">
-<p class="sentence">Assuming Congress and agency AI documents are comparable (a strong assumption, because the issuers cover different topics), I estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
+<div aria-live="polite" class="readout" id="readC"></div>
 </section>
 <section class="box results">
 <h2>Results and interpretation</h2>
@@ -104,6 +95,16 @@
 <div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p class="mdesc">difference-in-means, 95% CI, two-sided test at 5%</p></div>
 <div class="mpanel"><h3>Text analysis</h3><p class="meq">corpus &rarr; tokens &rarr; <span class="mred">counts</span></p><p class="mdesc">word shares by issuer, <code>cor.test()</code>; tf-idf in appendix</p></div>
 </div>
+<div class="qrpanel">
+<a class="qrbig" href="https://github.com/tobyn-smith/r-stat-class">
+<img alt="QR code linking to github.com/tobyn-smith/r-stat-class" class="qrimg" height="370" src="assets/qr_code.svg" width="370"/>
+<span class="qrlab"><b>Code and data</b><br/><span class="nw">github.com/tobyn-smith/</span><wbr/><span class="nw">r-stat-class</span></span>
+</a>
+<a class="qrbig" href="text/">
+<img alt="QR code linking to tobynsmith.me/data/text" class="qrimg" height="370" src="assets/qr_text.svg" width="370"/>
+<span class="qrlab"><b>Text analysis</b><br/>tobynsmith.me/data/text</span>
+</a>
+</div>
 </section>
 <section class="box">
 <h2>Policy implications</h2>
@@ -126,5 +127,5 @@
 </main></div></div><div class="tip" hidden="" id="tip"></div><nav aria-label="Print or download the poster" class="print-tools">
 <button class="print-btn" data-here="1" id="print-poster" type="button">Print poster</button>
 <a class="print-pdf" download="poster_24x36.pdf" href="poster_24x36.pdf">Download PDF (24 x 36 in)</a>
-</nav><script src="assets/poster.js"></script><script src="assets/print-btn.js"></script><script src="assets/print-fit.js"></script></body>
+</nav><script src="assets/poster.js?v=3"></script><script src="assets/print-btn.js?v=3"></script><script src="assets/print-fit.js?v=3"></script></body>
 </html>

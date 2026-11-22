@@ -12,7 +12,6 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 .print .keyf p{font-size:29px}
 .print .sentence{font-size:23px}
 .print .headnum .num{font-size:72px}
-.print .grid{grid-template-columns:minmax(0,10.8fr) minmax(0,14.6fr) minmax(0,9fr);grid-template-areas:"c1 c2 c3";padding:22px 0;align-items:start}
 .print .c2{grid-row:auto}
 .print .ta-in{padding:0}
 .print .twocol{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
@@ -27,8 +26,6 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 .qrbig{display:flex;flex-direction:column;align-items:center;background:var(--red);color:#fff;padding:18px;text-align:center}
 .qrbig img{display:block;width:var(--qr,216px);height:var(--qr,216px);background:#fff}
 .qrbig .qrlab{margin-top:12px;font-size:20px;line-height:1.4;color:#fff}
-/* rearranged print grid */
-.print .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr)}
 .row2{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1fr);gap:22px;align-items:start}
 .print .text-an{min-width:0}
 .agbox .note{margin-top:0;border-top:0;padding-top:0}
@@ -67,7 +64,24 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 .print .grid{flex:1 1 auto;align-items:stretch;min-height:0}
 .print .col{justify-content:space-between}
 
-/* References runs the full width of the last row */
-.print .refs{grid-column:1 / -1}
-.print .results{grid-column:span 2}
-.print .mpanels{grid-template-columns:1fr 1fr}
+.print .mpanels{grid-template-columns:minmax(0,1fr)}
+
+/* Three real columns, each a stack of boxes; boxes stretch so the column bottoms line up */
+.print .grid{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1.22fr) minmax(0,1.08fr) !important;grid-template-areas:"c1 c2 c3" !important}
+.print .col{display:flex !important;flex-direction:column;justify-content:flex-start}
+.print .c1{grid-area:c1}.print .c2{grid-area:c2;grid-row:auto}.print .c3{grid-area:c3}
+.print .col>section{flex:1 1 auto}
+.print .col>.keyban,.print .col>.figcard{flex:0 0 auto}
+.print .keyban{padding:24px 28px 26px}
+.print .keyban .eyebrow{font-size:18px}
+.print .figcard .cap{margin-top:14px}
+.print .box .qrbig img{width:150px;height:150px}
+.print .box .qrbig .qrlab{font-size:18px}
+.print .box .qrbig img{max-width:none;width:150px;height:150px}
+/* narrower layout width so the sheet scales up and the text prints larger */
+.print #poster{width:1500px}
+.print .box .qrbig .qrlab{font-size:17px}
+.print .mpanel .meq{font-size:20px}
+.print .mpanel h3{font-size:15px}
+.print .mpanel .mdesc{font-size:17px}
+.print .box .qrbig .qrlab .nw{white-space:nowrap}
