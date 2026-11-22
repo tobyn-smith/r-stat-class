@@ -30,14 +30,14 @@ p:last-child{margin-bottom:0}
 /* phone and tablet: one column, key finding straight after the title */
 @media (max-width:899px){
  .col{display:contents}
- .keyf{order:-1}
+ .keyf,.keyban{order:-1}
 }
 @media (min-width:900px){
  .grid{grid-template-columns:minmax(0,10fr) minmax(0,13fr);grid-template-areas:"c1 c2" "c3 c2";align-items:start}
  .c1{grid-area:c1}.c2{grid-area:c2;grid-row:1 / span 2}.c3{grid-area:c3}
 }
 @media (min-width:1280px){
- .grid{grid-template-columns:minmax(0,10.8fr) minmax(0,14.6fr) minmax(0,7.8fr);grid-template-areas:"c1 c2 c3"}
+ .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);grid-template-areas:"c1 c2 c3"}
  .c2{grid-row:auto}
 }
 
@@ -194,3 +194,18 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 .mpanel .mred{color:var(--red);font-weight:700}
 .mpanel .mdesc{font-style:italic;color:var(--muted);font-size:14px;line-height:1.35;margin:0}
 .mpanel code{font-size:.92em;font-style:normal}
+
+/* Key finding banner, as on the SPIA template */
+.keyban{background:var(--red);border:0;padding:18px 22px 20px;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.keyban .eyebrow{margin:0 0 .45em;font-size:14px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;opacity:.9}
+.keyban .sentence{color:#fff;font-weight:600}
+/* caption sits straight under the chart */
+.figcard .cap{margin:12px 0 0;color:var(--muted)}
+/* QR codes inside Method and code */
+.box .qrpanel{margin-top:14px;gap:10px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.box .qrbig{background:#F4F1EA;color:var(--ink);border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.18);padding:12px 8px}
+.box .qrbig{min-width:0}
+.box .qrbig .qrlab{color:var(--ink);font-size:14px;max-width:100%}
+.box .qrbig img{width:100%;max-width:110px;height:auto;aspect-ratio:1}
+@media (min-width:900px){.box .qrbig img{max-width:120px;width:100%;height:auto}.box .qrbig .qrlab{font-size:14px}}
+.box .qrbig .qrlab .nw{white-space:normal;overflow-wrap:anywhere}

@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-var IN=96,M=1.25*IN,SAFE_W=24*IN-2*M,SAFE_H=36*IN-2*M;
+var IN=96,M=1.25*IN,SAFE_W=36*IN-2*M,SAFE_H=24*IN-2*M;
 function ready(){return document.querySelector("#figC svg");}
 function fit(){
  var p=document.getElementById("poster");

@@ -12,7 +12,7 @@
 <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/sourceserifpro-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/sourceserifpro-bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/poster.css?v=2">
+<link rel="stylesheet" href="assets/poster.css?v=4">
 </head>
 <body>
 <header class="head">
@@ -59,20 +59,13 @@
    </dl>
   </div>
  </section>
-
- <section class="qrpanel">
-  <a class="qrbig" href="https://github.com/tobyn-smith/r-stat-class">
-   <img class="qrimg" src="assets/qr_code.svg" width="370" height="370" alt="QR code linking to github.com/tobyn-smith/r-stat-class">
-   <span class="qrlab"><b>Code and data</b><br><span class="nw">github.com/tobyn-smith/</span><wbr><span class="nw">r-stat-class</span></span>
-  </a>
-  <a class="qrbig" href="text/">
-   <img class="qrimg" src="assets/qr_text.svg" width="370" height="370" alt="QR code linking to tobynsmith.me/data/text">
-   <span class="qrlab"><b>Text analysis</b><br>tobynsmith.me/data/text</span>
-  </a>
- </section>
 </div>
 
 <div class="col c2">
+ <section class="sentence-card keyban" aria-label="Key finding">
+<p class="eyebrow">Key finding</p>
+  <p class="sentence">Assuming Congress and agency AI documents are comparable (a strong assumption, because the issuers cover different topics), I estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
+ </section>
 
  <section class="figcard">
   <div class="chips" role="group" aria-label="Highlight in Figure 1">
@@ -82,12 +75,8 @@
    <button type="button" class="chip" data-hl="0" aria-pressed="false">Proposed</button>
   </div>
   <div class="chart" id="figC"></div>
-  <div class="readout" id="readC" aria-live="polite"></div>
- </section>
  <p class="cap"><b>Figure 1.</b> AI policy documents by issuer and status. Each square is one AGORA row; Defunct dropped (N = 706).</p>
-
- <section class="sentence-card">
-  <p class="sentence">Assuming Congress and agency AI documents are comparable (a strong assumption, because the issuers cover different topics), I estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
+  <div class="readout" id="readC" aria-live="polite"></div>
  </section>
 
  <section class="box">
@@ -114,6 +103,16 @@
 <div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p class="mdesc">difference-in-means, 95% CI, two-sided test at 5%</p></div>
 <div class="mpanel"><h3>Text analysis</h3><p class="meq">corpus &rarr; tokens &rarr; <span class="mred">counts</span></p><p class="mdesc">word shares by issuer, <code>cor.test()</code>; tf-idf in appendix</p></div>
 </div>
+ <div class="qrpanel">
+  <a class="qrbig" href="https://github.com/tobyn-smith/r-stat-class">
+   <img class="qrimg" src="assets/qr_code.svg" width="370" height="370" alt="QR code linking to github.com/tobyn-smith/r-stat-class">
+   <span class="qrlab"><b>Code and data</b><br><span class="nw">github.com/tobyn-smith/</span><wbr><span class="nw">r-stat-class</span></span>
+  </a>
+  <a class="qrbig" href="text/">
+   <img class="qrimg" src="assets/qr_text.svg" width="370" height="370" alt="QR code linking to tobynsmith.me/data/text">
+   <span class="qrlab"><b>Text analysis</b><br>tobynsmith.me/data/text</span>
+  </a>
+ </div>
  </section>
 
  <section class="box">
@@ -140,10 +139,10 @@
 
 <nav class="print-tools" aria-label="Print or download the poster">
  <button type="button" class="print-btn" id="print-poster" data-href="print.html?print=1">Print poster</button>
- <a class="print-pdf" href="poster_24x36.pdf" download="poster_24x36.pdf">Download PDF (24 x 36 in)</a>
+ <a class="print-pdf" href="poster_36x24.pdf" download="poster_36x24.pdf">Download PDF (36 x 24 in)</a>
 </nav>
 <div class="tip" id="tip" hidden></div>
-<script src="assets/poster.js"></script>
-<script src="assets/print-btn.js"></script>
+<script src="assets/poster.js?v=4"></script>
+<script src="assets/print-btn.js?v=4"></script>
 </body>
 </html>

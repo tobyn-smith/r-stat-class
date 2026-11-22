@@ -76,9 +76,13 @@ function applyHl(){[].forEach.call(document.querySelectorAll("#figC .sq"),functi
 function docText(d){return "<b>"+esc(d.n)+"</b><br>"+esc(d.a)+". "+(d.e?"Enacted":"Proposed")+(d.d?", "+esc(d.d):"")+".";}
 function renderC(){
  var box=document.getElementById("figC");box.innerHTML="";var W=width("figC"),narrow=W<480;
- var printed=document.body.classList.contains("print"),per=narrow?21:printed?30:42,gap=narrow?1.5:2,cell=(W-2)/per,lab=narrow?40:printed?38:34,blockGap=narrow?14:printed?22:18,fs=narrow?15:printed?18:16;
- var groups=["C","A","S"].map(function(k){var ds=D.docs.filter(function(d){return d.i===k;});return {k:k,ds:ds};});
- var y=38,H=y;groups.forEach(function(g){g.y=y+lab;var rows=Math.ceil(g.ds.length/per);y=g.y+rows*cell+blockGap;});H=y;
+ var printed=document.body.classList.contains("print"),per=printed?Math.max(30,Math.round(W/15)):W<380?24:W<640?30:42,gap=narrow?1.5:2,cell=(W-2)/per,lab=narrow?40:printed?38:34,blockGap=narrow?14:printed?22:18,fs=narrow?15:printed?18:16;
+ /* one grid for all issuers: same columns, same square size, filled top to bottom then left to right,
+    so enacted is one block on the left and proposed one block on the right */
+ var groups=["C","A","S"].map(function(k){var ds=D.docs.filter(function(d){return d.i===k;}).map(function(d,j){return [d,j];}).sort(function(a,b){return (b[0].e-a[0].e)||(a[1]-b[1]);}).map(function(p){return p[0];});return {k:k,ds:ds};});
+ var maxCols=0;groups.forEach(function(g){g.rows=Math.ceil(g.ds.length/per);maxCols=Math.max(maxCols,Math.ceil(g.ds.length/g.rows));});
+ cell=(W-2)/maxCols;
+ var y=38,H=y;groups.forEach(function(g){g.y=y+lab;y=g.y+g.rows*cell+blockGap;});H=y-blockGap+4;
  var svg=el("svg",{viewBox:"0 0 "+W+" "+H,width:W,height:H,role:"img","aria-label":"Figure 1: one square per AGORA document, by issuer and status"},box);
  el("rect",{x:1,y:6,width:16,height:16,fill:C.red},svg);txt(svg,24,20,"Enacted",{"font-size":fs,"font-weight":700,fill:C.red});
  el("rect",{x:104,y:6,width:16,height:16,fill:C.prop},svg);txt(svg,127,20,"Proposed",{"font-size":fs,fill:C.muted});
@@ -86,7 +90,7 @@ function renderC(){
  groups.forEach(function(g){var ne=g.ds.reduce(function(a,d){return a+d.e;},0);
   var label=ISS[g.k]+": "+ne+" of "+g.ds.length+" enacted ("+(100*ne/g.ds.length).toFixed(1)+"%)";
   txt(svg,1,g.y-12,label,{"font-size":fs+1,"font-weight":700});
-  g.ds.forEach(function(d,j){var cx=1+(j%per)*cell,cy=g.y+Math.floor(j/per)*cell;
+  g.ds.forEach(function(d,j){var cx=1+Math.floor(j/g.rows)*cell,cy=g.y+(j%g.rows)*cell;
    var r=el("rect",{"class":"sq",x:cx,y:cy,width:cell-gap,height:cell-gap,fill:d.e?C.red:C.prop,"data-e":String(d.e)},svg);
    r._d=d;all.push(r);});
  });
