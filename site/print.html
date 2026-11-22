@@ -99,8 +99,11 @@
 <h2>Method and code</h2>
 <div class="pb">
 <p><b>Excluded:</b> 420 Defunct rows, because [add later]. 125 other rows: [add later]</p>
-<p>Difference in proportions (agency minus Congress) with 95% CI and two-sided z‑test.</p>
-<p>I assume Congress and agency documents are comparable apart from who issued them.</p>
+<p><b>Key assumption:</b> Congress and agency documents are comparable apart from who issued them, because [add later].</p>
+<div class="mpanels">
+<div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p>Difference-in-means estimator (agency minus Congress), 95% confidence interval, two-sided hypothesis test at the 5% level.</p></div>
+<div class="mpanel"><h3>Text analysis</h3><p class="meq">corpus &rarr; tokens &rarr; <span class="mred">counts</span></p><p>Word shares for each issuer from the AGORA short summaries, compared with <code>cor.test()</code>. tf-idf in the appendix.</p></div>
+</div>
 </div>
 </section>
 <section class="box">
@@ -110,8 +113,8 @@
 <section class="box">
 <h2>Limitations and next steps</h2>
 <div class="pb">
-<ul class="lim"><li>Issuers were not randomly assigned.</li><li>Congress rows are bill sections, which are not independent.</li><li>318 of 706 summaries may include unreviewed machine output.</li><li>Enacted may not mean the same thing for an agency rule as for a bill. [add later]</li></ul>
-<p class="after-list">Next, I will rerun it with one row per bill and clustered standard errors.</p>
+<ul class="lim"><li>Issuers were not randomly assigned.</li><li>Some of AGORA&rsquo;s policy summaries contain machine-generated text that has not been reviewed, so they would need fact-checking.</li></ul>
+<p class="after-list">Next steps: [add later]</p>
 </div>
 </section>
 <section class="box refs">
