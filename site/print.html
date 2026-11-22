@@ -59,7 +59,7 @@
 <div class="col c2">
 <section class="sentence-card keyban" aria-label="Key finding">
 <p class="eyebrow">Key finding</p>
-<p class="sentence">Assuming Congress and agency AI documents are comparable (a strong assumption, because the issuers cover different topics), I estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
+<p class="sentence">Assuming Congress and agency AI documents are comparable (a reasonable assumption because they are both US federal bodies and coded by AGORA under the same rules*), we estimate that issuance by a federal agency increases the share enacted by 36.7 percentage points on average.</p>
 </section>
 <section class="figcard">
 <div aria-label="Highlight in Figure 1" class="chips" role="group">
@@ -89,7 +89,7 @@
 <section class="box">
 <h2>Method and code</h2>
 <div class="pb">
-<p><b>Key assumption:</b> Congress and agency documents are comparable apart from who issued them, because they are both US federal bodies and coded by AGORA under the same rules.</p>
+<p><b>*Key assumption:</b> Congress and agency AI documents are comparable apart from who issued them, because they are both US federal bodies and coded by AGORA under the same rules.</p>
 <div class="mpanels">
 <div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p class="mdesc">difference-in-means, 95% CI, two-sided test at 5%</p></div>
 <div class="mpanel"><h3>Text analysis</h3><p class="meq">corpus &rarr; tokens &rarr; <span class="mred">counts</span></p><p class="mdesc">word shares by issuer, <code>cor.test()</code>; tf-idf in appendix</p></div>
