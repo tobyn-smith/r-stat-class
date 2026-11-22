@@ -69,3 +69,4 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 
 /* References runs the full width of the last row */
 .print .refs{grid-column:1 / -1}
+.print .mpanels{grid-template-columns:1fr 1fr}

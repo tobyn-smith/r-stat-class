@@ -186,3 +186,11 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
  .print-tools{display:none !important}
  body{padding-right:0;padding-bottom:0}
 }
+
+.mpanels{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px;margin-top:.6em}
+.mpanel{background:#fff;color:var(--ink);padding:10px 8px;min-width:0}
+.mpanel h3{color:var(--red);font-size:.8em;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .3em;font-weight:700}
+.mpanel p{margin:0 0 .3em;font-size:.88em;line-height:1.4}
+.mpanel .meq{text-align:center;white-space:nowrap;font-size:.82em;color:var(--black);margin:.2em 0 .5em}
+.mpanel .mred{color:var(--red);font-weight:700}
+.mpanel code{font-size:.9em}
