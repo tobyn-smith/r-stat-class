@@ -48,8 +48,7 @@ p:last-child{margin-bottom:0}
 .box a{color:#fff}
 .tag{display:inline-block;background:var(--teal);color:#fff;font-weight:700;padding:0 8px;margin-right:4px;line-height:1.5}
 .gap{display:inline-block;border:2px dashed #fff;padding:2px 8px;font-style:italic;background:rgba(255,255,255,.08)}
-.keyf{background:var(--strip);padding:18px 22px}
-.keyf .bluf{color:var(--red)}
+.keyf{background:var(--strip);border-left:10px solid var(--red);padding:18px 22px}
 .keyf p{font-weight:700;color:var(--black);font-size:clamp(22px,2.1vw,29px);line-height:1.35}
 .sentence-card{background:var(--strip);border:3px solid var(--red);padding:18px 20px}
 .sentence{font-size:clamp(20px,1.7vw,23px);line-height:1.5;color:var(--black)}
