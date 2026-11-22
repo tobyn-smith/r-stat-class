@@ -1,0 +1,68 @@
+/* Print layout: 24 x 36 in portrait, 1 in safe margin, khaki bleed */
+@page{size:24in 36in;margin:0}
+html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#sheet{position:relative;width:24in;height:36in;overflow:hidden;background:var(--khaki)}
+#poster{position:absolute;left:1in;top:1in;width:var(--dw,1700px);transform-origin:0 0}
+.print .head-in,.print .grid,.print .ta-in{max-width:none}
+.print .head{border-bottom:0}
+.print .logo img{width:230px}
+.print .head h1{font-size:62px}
+.print .byline{font-size:20px}
+.print .box h2{font-size:28px}
+.print .keyf p{font-size:29px}
+.print .sentence{font-size:23px}
+.print .headnum .num{font-size:72px}
+.print .grid{grid-template-columns:minmax(0,10.8fr) minmax(0,14.6fr) minmax(0,9fr);grid-template-areas:"c1 c2 c3";padding:22px 0;align-items:start}
+.print .c2{grid-row:auto}
+.print .ta-in{padding:0}
+.print .twocol{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.print .ta-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+/* interactive controls are not shown in print */
+.print .chips,.print .find,.print .readout,.print .tip{display:none !important}
+.print .note summary{cursor:default}
+.print .note summary::before{display:none}
+.print a{text-decoration:none}
+/* QR panel */
+.qrpanel{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.qrbig{display:flex;flex-direction:column;align-items:center;background:var(--red);color:#fff;padding:18px;text-align:center}
+.qrbig img{display:block;width:var(--qr,216px);height:var(--qr,216px);background:#fff}
+.qrbig .qrlab{margin-top:12px;font-size:20px;line-height:1.4;color:#fff}
+/* rearranged print grid */
+.print .grid{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr)}
+.row2{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1fr);gap:22px;align-items:start}
+.print .text-an{min-width:0}
+.agbox .note{margin-top:0;border-top:0;padding-top:0}
+.row2.full{grid-template-columns:minmax(0,1fr)}
+.print .hidden{display:none !important}
+.qrbig .qrlab{white-space:nowrap;font-size:18px}
+.qrpanel{gap:16px}
+.qrbig{padding:16px 10px}
+.print #figSC text{stroke:none}
+.qrbig{padding:14px 8px}
+.qrbig img{flex:none;max-width:none}
+.qrbig .qrlab{white-space:normal}
+.qrbig .nw{white-space:nowrap}
+
+/* Bigger type on the 24 x 36 in sheet: body 21px * scale 1.214 ≈ 19pt */
+.print,body.print{font-size:21px;line-height:1.6}
+.print .logo img{width:268px}
+.print .head h1{font-size:72px}
+.print .byline{font-size:23px}
+.print .box h2{font-size:33px}
+.print .keyf p{font-size:34px}
+.print .sentence{font-size:27px}
+.print .headnum .num{font-size:84px}
+.print .headnum span{font-size:21px}
+.print .cap{font-size:19px}
+.print .refs p{font-size:19px}
+.print .dtable{font-size:21px}
+.print .box .pb{padding:20px 16px 14px}
+.print .keyf{padding:22px 24px}
+.print .sentence-card{padding:22px 24px}
+.print .figcard{padding:22px}
+.print .grid{gap:22px;padding:28px 0 0}
+.print .col{gap:22px}
+/* Fill the safe height: leftover space is shared between sections, not left as a hole */
+.print #poster{display:flex;flex-direction:column}
+.print .grid{flex:1 1 auto;align-items:stretch;min-height:0}
+.print .col{justify-content:space-between}
