@@ -67,13 +67,13 @@ html,body{width:36in;height:24in;overflow:hidden;background:var(--khaki);-webkit
 .print .mpanels{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 
 /* Three real columns, each a stack of boxes; boxes stretch so the column bottoms line up */
-.print .grid{display:grid !important;grid-template-columns:minmax(0,1.05fr) minmax(0,1.1fr) minmax(0,1.2fr) !important;grid-template-areas:"c1 c2 c3" !important}
+/* Four stacks; widths tuned so the columns end level and the figure gets the widest column */
+.print .grid{display:grid !important;grid-template-columns:minmax(0,0.7fr) minmax(0,1.12fr) minmax(0,1.4fr) minmax(0,0.9fr) !important;grid-template-areas:"c1 c2 c3 c4" !important;grid-template-rows:auto !important}
 .print .col{display:flex !important;flex-direction:column;justify-content:flex-start}
-.print .c1{grid-area:c1}.print .c2{grid-area:c2;grid-row:auto}.print .c3{grid-area:c3}
+.print .c1{grid-area:c1}.print .c2{grid-area:c2}.print .c3{grid-area:c3}.print .c4{grid-area:c4}
+.print .c3,.print .c4{grid-row:auto}
 .print .col>section{flex:1 1 auto}
-.print .col>.keyban,.print .col>.figcard{flex:0 0 auto}
-.print .keyban{padding:24px 28px 26px}
-.print .keyban .eyebrow{font-size:18px}
+.print .col>.figcard{flex:0 0 auto}
 .print .figcard .cap{margin-top:14px}
 .print .box .qrbig img{width:150px;height:150px}
 .print .box .qrbig .qrlab{font-size:18px}
@@ -93,3 +93,23 @@ html,body{width:36in;height:24in;overflow:hidden;background:var(--khaki);-webkit
 .print .dtable{font-size:22px}
 .qrnote{margin-top:12px}
 .print .qrfoot{font-size:19px}
+
+/* References strip along the bottom, four short entries in two columns */
+.print .refwrap{max-width:none;padding:22px 0 0}
+.print .refstrip .pb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;padding:14px 16px 10px}
+.print .refstrip .pb p{margin:0 0 .35em}
+.print .refstrip h2{font-size:28px}
+/* Results sits in a narrow column, so its two halves stack */
+.print .c4 .twocol{grid-template-columns:minmax(0,1fr)}
+.print .c4 .twocol>div{margin-bottom:0}
+.print .c4 .twocol>div>p:last-child{margin-bottom:.75em}
+/* QR cards: code above its label so long links never spill out of the card */
+.print .box .qrbig{flex-direction:column;align-items:center;text-align:center;gap:10px;padding:14px 10px}
+.print .box .qrbig img{width:132px;height:132px}
+.print .box .qrbig .qrlab{font-size:18px}
+/* slimmer header leaves more height for the boxes */
+.print .logo{padding:20px 20px 44px}
+.print .logo img{width:236px}
+.print .head-text{padding:16px 0}
+.print .head h1{font-size:68px}
+.print .grid{padding-top:22px}
