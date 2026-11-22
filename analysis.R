@@ -305,3 +305,42 @@ state_tfidf <- sort((as.numeric(state_tab) / length(state_words)) *
 head(congress_tfidf, 10)
 head(agency_tfidf, 10)
 head(state_tfidf, 10)
+
+## figure 1: the gap with 95% CIs, main estimate and the three checks
+library(ggplot2)
+
+gap_ci <- data.frame(
+  label = c("Main estimate",
+            "Defunct counted as not enacted",
+            "Without the Executive Office\nof the President",
+            "Validated rows only"),
+  est = 100 * c(diff_means, diff_defunct, diff_no_eop, diff_val),
+  se = 100 * c(se_diff, se_defunct, se_no_eop, se_val)
+)
+gap_ci$lo <- gap_ci$est - 1.96 * gap_ci$se
+gap_ci$hi <- gap_ci$est + 1.96 * gap_ci$se
+gap_ci$label <- factor(gap_ci$label, levels = rev(gap_ci$label))
+gap_ci$text <- sprintf("%+.1f (%.1f to %.1f)", gap_ci$est, gap_ci$lo, gap_ci$hi)
+gap_ci$text <- gsub("-", "\u2212", gap_ci$text)
+gap_ci
+
+fig_gap <- ggplot(gap_ci, aes(x = est, y = label)) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey40", linewidth = 0.6) +
+  geom_errorbarh(aes(xmin = lo, xmax = hi), height = 0.25,
+                 colour = "#BA0C2F", linewidth = 1.1) +
+  geom_point(colour = "#BA0C2F", size = 5) +
+  geom_text(aes(label = text), vjust = -1.1, size = 5.6, family = "serif",
+            colour = "grey15") +
+  scale_x_continuous(limits = c(-20, 80), breaks = seq(-20, 80, 20)) +
+  labs(x = "Difference in share enacted (percentage points)", y = NULL) +
+  theme_minimal(base_size = 20, base_family = "serif") +
+  theme(plot.background = element_rect(fill = "white", colour = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_blank(),
+        axis.text.y = element_text(colour = "grey10"),
+        axis.title.x = element_text(size = 19, margin = margin(t = 10)),
+        plot.margin = margin(10, 20, 10, 10))
+fig_gap
+
+ggsave("site/assets/fig_gap_ci.png", fig_gap, width = 10.3, height = 5,
+       dpi = 300, bg = "white")

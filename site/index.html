@@ -12,7 +12,7 @@
 <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/sourceserifpro-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/sourceserifpro-bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/poster.css?v=5">
+<link rel="stylesheet" href="assets/poster.css?v=6">
 </head>
 <body>
 <header class="head">
@@ -39,10 +39,9 @@
  <section class="box">
   <h2>Literature Review and Theory</h2>
   <div class="pb">
-   <p>It is evident that legislative gridlocks often limit what Congress enacts (Binder, 1999). At the same time, while federal agencies can issue rules without congressional approval, later administrations can easily revoke them.</p>
-   <p>During the literature review, <i>Loper Bright Enterprises v. Raimondo</i> (2024) established that judges establish what unclear laws mean, making agency rules easier to challenge.</p>
-   <p>This is reinforced by four agency AI documents in the AGORA dataset were classified as defunct following policy decisions by the current administration.</p>
-   <p><b>Gap:</b> The goal of this project is to establish this literature gap as it looks at whether the issuer of an AI policy changes how likely it is to be enacted.</p>
+   <p>Partisan gridlock often slows or blocks legislation in Congress (Binder, 1999).</p>
+   <p>Agencies can issue rules without congressional approval, which is faster, but later presidents can revoke them. <i>Loper Bright Enterprises v. Raimondo</i> (2024) made agency rules even easier to challenge in court. This is shown in the AGORA dataset, as four agency AI documents were already marked as defunct following a policy shift between administrations.</p>
+   <p><b>Gap:</b> No study has measured whether the issuing authority changes the likelihood that a US AI policy gets enacted.</p>
   </div>
  </section>
 
@@ -68,26 +67,18 @@
  </section>
 
  <section class="figcard">
-  <div class="chips" role="group" aria-label="Highlight in Figure 1">
-   <span class="chips-lab">Highlight:</span>
-   <button type="button" class="chip" data-hl="all" aria-pressed="true">All</button>
-   <button type="button" class="chip" data-hl="1" aria-pressed="false">Enacted</button>
-   <button type="button" class="chip" data-hl="0" aria-pressed="false">Proposed</button>
-  </div>
-  <div class="chart" id="figC"></div>
- <p class="cap"><b>Figure 1.</b> AI policy documents by issuer and status. Each square is one AGORA row; Defunct dropped (N = 706).</p>
-  <div class="readout" id="readC" aria-live="polite"></div>
- </section>
+<img class="figimg" src="assets/fig_gap_ci.png" width="3090" height="1500" alt="Figure 1: difference in share enacted, federal agency minus Congress, with 95% confidence intervals for the main estimate and three checks">
+<p class="cap"><b>Figure 1.</b> Difference in share enacted, federal agency minus Congress, with 95% confidence intervals. Source: AGORA v1.32.0.</p>
+</section>
 
  <section class="box">
   <h2>Results and interpretation</h2>
   <div class="pb">
 <div class="headnum"><div class="num">+36.7</div><span>percentage points (95% CI 27.3 to 46.2; z&nbsp;=&nbsp;7.61; p&nbsp;&lt;&nbsp;0.001)</span></div>
 <div class="twocol">
-<div><p>Enacted: agencies 90.6%, Congress 53.8%.</p><p><b>Substantively large?</b> Yes, this is a big difference for any policymaker because of the sheer disparity between the two.</p></div>
-<div><p><b>Causal?</b> Partly. The documents weren't randomly assigned and Congress and agencies are different federal bodies, so confounding variables can explain part of this gap.</p><p>Topics differ (word-share r = 0.43, <a href="text/">Text analysis page</a>).</p></div>
+<div><p>Enacted: agencies 90.6%, Congress 53.8%.</p><p><b>Substantively large?</b> Yes. Nine in 10 agency AI policies are enacted, compared to just over half of congressional bills. AI in federal governance relies on rules that are much easier to reverse than if they were statutes.</p></div>
+<div><p><b>Causal?</b> Partly. Documents were not randomly assigned, and Congress writes broader legislation while agencies issue narrower technical rules. This could be reinforced in the text analysis (r = 0.42).</p></div>
 </div>
-<p>Checks: Defunct as not enacted +57.5; without the Executive Office of the President +37.6; validated rows only &minus;3.2 (p = 0.41).</p>
 <p>Validated rows have been fully reviewed by AGORA. Almost all were enacted (Congress 159 of 160, agencies 25 of 26), leaving little room for a gap.</p>
 </div>
  </section>
@@ -112,19 +103,19 @@
    <span class="qrlab"><b>Text analysis</b><br>tobynsmith.me/data/text</span>
   </a>
  </div>
- <p class="qrnote">I excluded the 420 &lsquo;defunct rows&rsquo; because they are neither enacted nor proposed. Even if included, they don&rsquo;t change the results.</p>
-<p class="qrnote">Also, there are 125 other rows issued by bodies outside of my three groups, including US cities, other countries and private companies.</p>
+ <p class="qrnote">We excluded the 420 Defunct rows because they are neither enacted nor proposed. Counting them as not enacted widens the gap to +57.5 points (Figure 1).</p>
+<p class="qrnote qrfoot">There are 125 other rows issued by bodies outside of our three groups, including US cities, other countries and private companies.</p>
 </section>
 
  <section class="box">
   <h2>Policy implications</h2>
-  <div class="pb"><p>When a new administration enters office, they can undo agency AI rules. As a result, core agency AI rules should be placed into statute. The agencies should also outline which AI rules are more vulnerable to reversals if those reversals could hamper agency effectiveness.</p></div>
+  <div class="pb"><p>Because federal AI policy relies on agency rules rather than statutes, these policies remain vulnerable to reversal. Congress should codify AI standards into statute to make them durable across administrations, while federal agencies should prioritise Congress-backed rulemaking for high-stakes AI rules that are at potential risk.</p></div>
  </section>
 
  <section class="box">
   <h2>Limitations and next steps</h2>
   <div class="pb">
-   <ul class="lim"><li>Issuers were not randomly assigned.</li><li>Some of AGORA&rsquo;s policy summaries contain machine-generated text that has not been reviewed, so they would need fact-checking.</li></ul>
+   <ul class="lim"><li>148 of the 364 Congress rows are NDAA sections, all enacted; without them the gap is +68.3 points.</li><li>318 of 706 (45%) of AGORA&rsquo;s policy summaries contain machine-generated text that has not been reviewed, so they would need fact-checking.</li></ul>
    <p class="after-list">Next step: Focus on one issuer over time and compare before and after a new administration.</p>
   </div>
  </section>
