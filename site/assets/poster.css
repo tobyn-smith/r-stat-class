@@ -94,9 +94,6 @@ p:last-child{margin-bottom:0}
 .cap{font-size:16px;color:var(--ink);line-height:1.55;margin:-8px 0 0}
 .card .cap{margin:14px 0 0;color:var(--muted)}
 svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
-.sq{cursor:pointer}
-.sq.dim{opacity:.18}
-.sq.on{stroke:var(--black);stroke-width:1.4}
 .bar{cursor:pointer}
 .bar:hover rect.b,.bar.on rect.b{fill:var(--teal)}
 .dot{cursor:pointer}
@@ -210,3 +207,7 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 @media (min-width:900px){.box .qrbig img{max-width:120px;width:100%;height:auto}.box .qrbig .qrlab{font-size:14px}}
 .box .qrbig .qrlab .nw{white-space:normal;overflow-wrap:anywhere}
 .qrnote{margin-top:14px}
+
+/* Figure 1 image and footnote line */
+.figimg{display:block;width:100%;height:auto}
+.qrfoot{font-size:16px;color:var(--muted);line-height:1.5}

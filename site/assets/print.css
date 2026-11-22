@@ -92,3 +92,4 @@ html,body{width:36in;height:24in;overflow:hidden;background:var(--khaki);-webkit
 .print,body.print{font-size:22px}
 .print .dtable{font-size:22px}
 .qrnote{margin-top:12px}
+.print .qrfoot{font-size:19px}
