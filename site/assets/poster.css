@@ -210,4 +210,4 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 
 /* Figure 1 image and footnote line */
 .figimg{display:block;width:100%;height:auto}
-.qrfoot{font-size:16px;color:var(--muted);line-height:1.5}
+.qrfoot{font-size:16px;color:#fff;opacity:.9;line-height:1.5}
