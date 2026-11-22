@@ -13,3 +13,7 @@ I use **AGORA v1.32.0**, the AI GOvernance and Regulatory Archive from the [Emer
 ## Textbook
 
 Llaudet, E., & Imai, K. (2022). *Data analysis for social science: A friendly and practical introduction*. Princeton University Press.
+
+## Running it
+
+I run `analysis.R` in R from the repo root. It reads the CSVs in `data/agora/` and prints the numbers I use on the poster.
