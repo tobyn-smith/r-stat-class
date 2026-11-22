@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>Text analysis and notes &ndash; US AI policy gets enacted where it is easiest to undo</title>
+<meta name="author" content="Tobyn Smith">
+<meta name="description" content="Text analysis and longer notes for Tobyn Smith&rsquo;s US AI policy data project, University of Georgia.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#BA0C2F">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/sourceserifpro-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/sourceserifpro-bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/poster.css">
+<link rel="stylesheet" href="text.css">
+</head>
+<body>
+<header class="head">
+ <div class="head-in">
+  <div class="logo"><img src="../assets/spia_logo_white.png" width="900" height="357" alt="University of Georgia School of Public and International Affairs"></div>
+  <div class="head-text">
+   <h1>US AI policy gets enacted where it is easiest to undo</h1>
+   <p class="byline"><b>Tobyn Smith</b>, <a href="mailto:tobynsmith@uga.edu">tobynsmith@uga.edu</a>, University of Georgia</p>
+   <p class="byline">Text analysis and notes</p>
+  </div>
+ </div>
+</header>
+
+<p class="back"><a href="../">Back to the poster</a></p>
+<div class="intro">
+ <p>The poster is the short version. Here I set out the text analysis, the calculation, how I built the sample, and the agency lists.</p>
+</div>
+
+<section class="text-an" aria-labelledby="ta-h">
+ <div class="ta-in">
+  <section class="box">
+   <h2 id="ta-h">Text analysis</h2>
+   <div class="pb ta-grid">
+    <div class="card">
+     <h3>Words that set each issuer apart (tf-idf, AGORA short summaries)</h3>
+     <div class="chips" role="group" aria-label="Issuer">
+      <button type="button" class="chip" data-tf="Congress" aria-pressed="true">Congress</button>
+      <button type="button" class="chip" data-tf="Federal agency" aria-pressed="false">Federal agency</button>
+      <button type="button" class="chip" data-tf="State" aria-pressed="false">State</button>
+     </div>
+     <div class="chart" id="figTF"></div>
+     <div class="readout" id="readTF" aria-live="polite"></div>
+     <p class="cap">Stop words removed, plus a custom list of months, drafting words and US state names. tf-idf goes beyond the course (Silge and Robinson, 2017, ch 3). Source: AGORA v1.32.0.</p>
+    </div>
+    <div class="card">
+     <h3>How alike is the language? Word frequencies against Congress</h3>
+     <div class="chips" role="group" aria-label="Comparison">
+      <button type="button" class="chip" data-sc="Federal agency" aria-pressed="true">Congress vs Federal agency</button>
+      <button type="button" class="chip" data-sc="State" aria-pressed="false">Congress vs State</button>
+     </div>
+     <label class="find"><span>Find a word</span><input type="search" id="findword" autocomplete="off" spellcheck="false" list="wordlist"></label>
+     <datalist id="wordlist"></datalist>
+     <div class="chart" id="figSC"></div>
+     <div class="readout" id="readSC" aria-live="polite"></div>
+     <p class="cap">Each dot is a word used by both issuers. Words far from the dashed line lean to one side. r is the correlation between the two word shares (cor.test, 475 shared words: 95% CI 0.36 to 0.50, p &lt; 0.001).</p>
+    </div>
+   </div>
+  </section>
+ </div>
+</section>
+
+<div class="extra">
+ <section class="box">
+  <h2>The calculation</h2>
+  <div class="pb">
+   <div id="calc"></div>
+  </div>
+ </section>
+
+ <section class="box">
+  <h2>How the sample was built</h2>
+  <div class="pb">
+   <ol class="flow" id="flow"></ol>
+  </div>
+ </section>
+
+ <section class="box">
+  <h2>The 53 federal agency documents</h2>
+  <div class="pb">
+   <ul class="agencies" id="agencies"></ul>
+  </div>
+ </section>
+
+ <section class="box">
+  <h2>The four agency AI rules that went Defunct in 2025</h2>
+  <div class="pb">
+   <ul class="agencies defunct" id="defunct"></ul>
+  </div>
+ </section>
+
+ <section class="box refs">
+  <h2>References</h2>
+  <div class="pb">
+   <p>Arnold, Z., Melot, J., Enwereazu, O., Schiff, D. S., Schiff, K. J. and Girard, T. (2026). <i>AGORA Dataset</i> (Version 1.32.0). Zenodo. <a href="https://doi.org/10.5281/zenodo.21964209">https://doi.org/10.5281/zenodo.21964209</a></p>
+   <p>Silge, J. and Robinson, D. (2017). <i>Text Mining with R: A Tidy Approach</i>. O&rsquo;Reilly.</p>
+  </div>
+ </section>
+</div>
+
+<nav class="print-tools" aria-label="Print or download the poster">
+ <button type="button" class="print-btn" id="print-poster" data-href="../print.html?print=1">Print poster</button>
+ <a class="print-pdf" href="../poster_24x36.pdf" download="poster_24x36.pdf">Download PDF (24 x 36 in)</a>
+</nav>
+<div class="tip" id="tip" hidden></div>
+<script src="../assets/poster.js"></script>
+<script src="../assets/print-btn.js"></script>
+</body>
+</html>
