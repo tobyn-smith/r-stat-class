@@ -12,8 +12,6 @@ head(documents[, c("Authority", "Most.recent.activity")])
 dim(documents)
 dim(authorities)
 
-## View(documents)
-
 ## most recent activity
 table(documents$Most.recent.activity, exclude = NULL)
 
@@ -116,21 +114,6 @@ fit <- lm(enacted ~ agency, data = two_groups)
 fit
 summary(fit)$coef
 
-## bar charts
-png("figures/fig1_pct_enacted_by_issuer.png",
-    width = 8, height = 5.5, units = "in", res = 300)
-barplot(pct_enacted, ylim = c(0, 100),
-        xlab = "Issuer", ylab = "% enacted",
-        main = "Share of AI policies enacted, by issuer")
-dev.off()
-
-png("figures/fig2_counts_by_issuer.png",
-    width = 8, height = 5.5, units = "in", res = 300)
-barplot(t(activity_counts), legend.text = TRUE,
-        xlab = "Issuer", ylab = "Number of documents",
-        main = "AI policy documents by issuer and status")
-dev.off()
-
 ## check 1: Defunct counted as not enacted
 issuers$enacted <- ifelse(issuers$Most.recent.activity == "Enacted", 1, 0)
 agency_all <- issuers$enacted[issuers$issuer == "Federal agency"]
@@ -210,69 +193,6 @@ table(two_groups$issuer, two_groups$applies_gov)
 fit_gov <- lm(enacted ~ agency + applies_gov, data = two_groups)
 fit_gov
 summary(fit_gov)$coef
-
-## poster charts (bigger text, value labels, clear colours)
-## titles live in the poster HTML; all three figures share a 4:3 canvas,
-## the same type sizes, and the same bar width
-poster_cols <- c("#BA0C2F", "#2AA9B8", "#6E6A63")
-poster_par <- function(left = 1.05) {
-  par(mai = c(0.85, left, 0.32, 0.32),
-      mgp = c(2.6, 0.7, 0),
-      bty = "l",
-      family = "sans",
-      cex.axis = 1.35,
-      cex.lab = 1.45,
-      las = 1)
-}
-
-png("figures/poster_fig1_pct_enacted.png",
-    width = 9, height = 6.75, units = "in", res = 300)
-poster_par()
-bars <- barplot(pct_enacted, ylim = c(0, 103), col = poster_cols,
-                border = NA, width = 0.8, space = 0.55,
-                cex.names = 1.45,
-                xlab = "Issuer", ylab = "% enacted")
-text(bars, pct_enacted + 3.2,
-     paste0(round(pct_enacted, 1), "%"), cex = 1.4, font = 2, xpd = TRUE)
-text(bars, 6, paste0("n = ", c(length(congress), length(agency),
-                               sum(policies$issuer == "State"))),
-     col = "white", cex = 1.35)
-dev.off()
-
-png("figures/poster_fig2_counts.png",
-    width = 9, height = 6.75, units = "in", res = 300)
-poster_par()
-count_bars <- barplot(t(activity_counts), beside = TRUE,
-                      col = c("#BA0C2F", "#C8C4BC"), border = NA,
-                      ylim = c(0, 280), width = 0.8, space = c(0.18, 0.55),
-                      cex.names = 1.45,
-                      xlab = "Issuer", ylab = "Number of documents",
-                      legend.text = TRUE,
-                      args.legend = list(x = "top", bty = "n", cex = 1.35,
-                                         inset = 0.01))
-text(count_bars, t(activity_counts) + 10, t(activity_counts),
-     cex = 1.4, font = 2, xpd = TRUE)
-dev.off()
-
-## main result and checks with 95% CIs (check 5 has no CI here, so it is left out)
-est <- 100 * c(diff_means, diff_defunct, diff_no_eop, diff_val, diff_no_ndaa)
-ses <- 100 * c(se_diff, se_defunct, se_no_eop, se_val, se_no_ndaa)
-labels <- c("Main result", "Defunct as\nnot enacted", "Without EOP",
-            "Validated\nrows only", "Without NDAA\nsections")
-
-png("figures/poster_fig3_checks.png",
-    width = 9, height = 6.75, units = "in", res = 300)
-poster_par(left = 2.1)
-plot(est, 5:1, xlim = c(-40, 100), ylim = c(0.35, 5.55), pch = 19, cex = 1.8,
-     col = c("#BA0C2F", rep("#2AA9B8", 4)), yaxt = "n",
-     xlab = "Agency minus Congress (percentage points)", ylab = "")
-segments(est - 1.96 * ses, 5:1, est + 1.96 * ses, 5:1, lwd = 3.5,
-         col = c("#BA0C2F", rep("#2AA9B8", 4)))
-abline(v = 0, lty = 2)
-axis(2, at = 5:1, labels = labels, las = 1, cex.axis = 1.35, tick = FALSE)
-text(est, 5:1 + 0.28, paste0(sprintf("%+.1f", est)), cex = 1.4, font = 2,
-     xpd = TRUE)
-dev.off()
 
 ## unique Congress bills (one link can cover several section rows)
 length(unique(policies$Link.to.document[policies$issuer == "Congress"]))
@@ -366,7 +286,7 @@ cor_cs$conf.int
 cor_cs$p.value
 length(shared_cs)
 
-## Appendix: tf-idf (extra step, beyond the assigned chapters)
+## appendix: tf-idf
 ## tf = count / total words; idf = log(3 / how many issuers use the word)
 all_words <- unique(c(names(congress_tab), names(agency_tab), names(state_tab)))
 n_issuers <- (all_words %in% names(congress_tab)) +
@@ -385,9 +305,3 @@ state_tfidf <- sort((as.numeric(state_tab) / length(state_words)) *
 head(congress_tfidf, 10)
 head(agency_tfidf, 10)
 head(state_tfidf, 10)
-
-png("figures/fig3_tfidf_congress.png",
-    width = 8, height = 5.5, units = "in", res = 300)
-barplot(head(congress_tfidf, 10), las = 2, ylab = "tf-idf",
-        main = "Highest tf-idf words, Congress")
-dev.off()
