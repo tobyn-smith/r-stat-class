@@ -13,7 +13,7 @@
 <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml"/>
 <link as="font" crossorigin="" href="assets/fonts/sourceserifpro-regular.woff2" rel="preload" type="font/woff2"/>
 <link as="font" crossorigin="" href="assets/fonts/sourceserifpro-bold.woff2" rel="preload" type="font/woff2"/>
-<link href="assets/poster.css" rel="stylesheet"/><link href="assets/print.css" rel="stylesheet"/>
+<link href="assets/poster.css?v=2" rel="stylesheet"/><link href="assets/print.css?v=2" rel="stylesheet"/>
 </head>
 <body class="print"><div id="sheet"><div id="poster"><header class="head">
 <div class="head-in">
@@ -101,9 +101,8 @@
 <p><b>Excluded:</b> 420 Defunct rows, because [add later]. 125 other rows: [add later]</p>
 <p><b>Key assumption:</b> Congress and agency documents are comparable apart from who issued them, because [add later].</p>
 <div class="mpanels">
-<div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p>Difference-in-means estimator (agency minus Congress), 95% confidence interval, two-sided hypothesis test at the 5% level.</p></div>
-<div class="mpanel"><h3>Text analysis</h3><p class="meq">corpus &rarr; tokens &rarr; <span class="mred">counts</span></p><p>Word shares for each issuer from the AGORA short summaries, compared with <code>cor.test()</code>. tf-idf in the appendix.</p></div>
-</div>
+<div class="mpanel"><h3>Statistical model</h3><p class="meq"><i>Enacted</i><sub>i</sub> = &alpha; + &beta; <i>Agency</i><sub>i</sub> + &epsilon;<sub>i</sub></p><p class="mdesc">difference-in-means, 95% CI, two-sided test at 5%</p></div>
+<div class="mpanel"><h3>Text analysis</h3><p class="meq">corpus &rarr; tokens &rarr; <span class="mred">counts</span></p><p class="mdesc">word shares by issuer, <code>cor.test()</code>; tf-idf in appendix</p></div>
 </div>
 </section>
 <section class="box">
