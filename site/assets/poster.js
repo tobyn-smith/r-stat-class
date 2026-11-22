@@ -76,7 +76,7 @@ function applyHl(){[].forEach.call(document.querySelectorAll("#figC .sq"),functi
 function docText(d){return "<b>"+esc(d.n)+"</b><br>"+esc(d.a)+". "+(d.e?"Enacted":"Proposed")+(d.d?", "+esc(d.d):"")+".";}
 function renderC(){
  var box=document.getElementById("figC");box.innerHTML="";var W=width("figC"),narrow=W<480;
- var printed=document.body.classList.contains("print"),per=printed?30:W<380?24:W<640?30:42,gap=narrow?1.5:2,cell=(W-2)/per,lab=narrow?40:printed?38:34,blockGap=narrow?14:printed?22:18,fs=narrow?15:printed?18:16;
+ var printed=document.body.classList.contains("print"),per=printed?Math.max(30,Math.round(W/15)):W<380?24:W<640?30:42,gap=narrow?1.5:2,cell=(W-2)/per,lab=narrow?40:printed?38:34,blockGap=narrow?14:printed?22:18,fs=narrow?15:printed?18:16;
  /* one grid for all issuers: same columns, same square size, filled top to bottom then left to right,
     so enacted is one block on the left and proposed one block on the right */
  var groups=["C","A","S"].map(function(k){var ds=D.docs.filter(function(d){return d.i===k;}).map(function(d,j){return [d,j];}).sort(function(a,b){return (b[0].e-a[0].e)||(a[1]-b[1]);}).map(function(p){return p[0];});return {k:k,ds:ds};});

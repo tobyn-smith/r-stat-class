@@ -1,7 +1,7 @@
-/* Print layout: 24 x 36 in portrait, 1 in safe margin, khaki bleed */
-@page{size:24in 36in;margin:0}
-html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit-print-color-adjust:exact;print-color-adjust:exact}
-#sheet{position:relative;width:24in;height:36in;overflow:hidden;background:var(--khaki)}
+/* Print layout: 36 x 24 in landscape, 1.25 in safe margin, khaki bleed */
+@page{size:36in 24in;margin:0}
+html,body{width:36in;height:24in;overflow:hidden;background:var(--khaki);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#sheet{position:relative;width:36in;height:24in;overflow:hidden;background:var(--khaki)}
 #poster{position:absolute;left:1in;top:1in;width:var(--dw,1700px);transform-origin:0 0}
 .print .head-in,.print .grid,.print .ta-in{max-width:none}
 .print .head{border-bottom:0}
@@ -40,7 +40,7 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 .qrbig .qrlab{white-space:normal}
 .qrbig .nw{white-space:nowrap}
 
-/* Bigger type on the 24 x 36 in sheet: body 21px * scale 1.214 ≈ 19pt */
+/* Bigger type on the 36 x 24 in sheet */
 .print,body.print{font-size:21px;line-height:1.6}
 .print .logo img{width:268px}
 .print .head h1{font-size:72px}
@@ -64,10 +64,10 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 .print .grid{flex:1 1 auto;align-items:stretch;min-height:0}
 .print .col{justify-content:space-between}
 
-.print .mpanels{grid-template-columns:minmax(0,1fr)}
+.print .mpanels{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 
 /* Three real columns, each a stack of boxes; boxes stretch so the column bottoms line up */
-.print .grid{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1.22fr) minmax(0,1.08fr) !important;grid-template-areas:"c1 c2 c3" !important}
+.print .grid{display:grid !important;grid-template-columns:minmax(0,1.05fr) minmax(0,1.1fr) minmax(0,1.2fr) !important;grid-template-areas:"c1 c2 c3" !important}
 .print .col{display:flex !important;flex-direction:column;justify-content:flex-start}
 .print .c1{grid-area:c1}.print .c2{grid-area:c2;grid-row:auto}.print .c3{grid-area:c3}
 .print .col>section{flex:1 1 auto}
@@ -79,9 +79,15 @@ html,body{width:24in;height:36in;overflow:hidden;background:var(--khaki);-webkit
 .print .box .qrbig .qrlab{font-size:18px}
 .print .box .qrbig img{max-width:none;width:150px;height:150px}
 /* narrower layout width so the sheet scales up and the text prints larger */
-.print #poster{width:1500px}
+.print #poster{width:2600px}
 .print .box .qrbig .qrlab{font-size:17px}
 .print .mpanel .meq{font-size:20px}
 .print .mpanel h3{font-size:15px}
 .print .mpanel .mdesc{font-size:17px}
 .print .box .qrbig .qrlab .nw{white-space:nowrap}
+/* landscape: QR cards sit image-left, label-right so Method stays compact */
+.print .box .qrbig{flex-direction:row;justify-content:center;gap:16px;text-align:left;padding:12px 14px}
+.print .box .qrbig .qrlab{margin-top:0}
+.print .box .qrbig img{width:140px;height:140px}
+.print,body.print{font-size:22px}
+.print .dtable{font-size:22px}
