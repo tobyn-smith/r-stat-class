@@ -50,13 +50,12 @@
   <h2>Data</h2>
   <div class="pb">
    <dl class="dtable">
-    <div><dt>Source</dt><dd>AGORA v1.32.0 (Emerging Technology Observatory)</dd></div>
-    <div><dt>Unit of analysis</dt><dd>One AGORA document. Long bills are split by AI section (364 sections from 177 bills)</dd></div>
-    <div><dt>Coverage</dt><dd>US federal and state, 2017 to 2026. N = 706 of 1,251</dd></div>
-    <div><dt>Outcome (Y)</dt><dd>Enacted = 1, Proposed = 0</dd></div>
-    <div><dt>Treatment (X)</dt><dd>Federal agency (n = 53). Control: Congress (n = 364). States (n = 289) are descriptive only</dd></div>
-    <div><dt>Controls</dt><dd>None (difference-in-means estimator)</dd></div>
-    <div><dt>Excluded</dt><dd>420 Defunct rows, because [add later]. 125 other rows: [add later]</dd></div>
+    <div><dt>Source</dt><dd>AGORA v1.32.0 (ETO)</dd></div>
+    <div><dt>Unit of analysis</dt><dd>Document (long bills split by AI section)</dd></div>
+    <div><dt>Coverage</dt><dd>US federal (n = 417) and state (n = 289), 2017 to 2026. N = 706</dd></div>
+    <div><dt>Outcome (Y)</dt><dd><code>enacted</code>: 1 = enacted, 0 = proposed</dd></div>
+    <div><dt>Treatment (X)</dt><dd><code>issuer</code>: federal agency (n = 53) vs Congress (n = 364)</dd></div>
+    <div><dt>Controls</dt><dd>None</dd></div>
    </dl>
   </div>
  </section>
@@ -112,6 +111,7 @@
  <section class="box">
   <h2>Method and code</h2>
   <div class="pb">
+<p><b>Excluded:</b> 420 Defunct rows, because [add later]. 125 other rows: [add later]</p>
    <p>Difference in proportions (agency minus Congress) with 95% CI and two-sided z&#8209;test.</p>
    <p>I assume Congress and agency documents are comparable apart from who issued them.</p>
   </div>
