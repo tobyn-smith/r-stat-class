@@ -16,4 +16,4 @@ Llaudet, E., & Imai, K. (2022). *Data analysis for social science: A friendly an
 
 ## Running it
 
-I run `analysis.R` in R from the repo root. It reads the CSVs in `data/agora/` and prints the numbers I use on the poster.
+Run `analysis.R` in R. It then reads the CSVs in `data/agora/`. 
