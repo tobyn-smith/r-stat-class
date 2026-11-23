@@ -225,7 +225,7 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 .fig2{margin:14px 0 0}
 .fig2 img{display:block;width:100%;height:auto}
 .fig2 .cap{margin:.4em 0 0}
-@media (max-width:760px){.headqr{padding:0 0 16px;flex-wrap:wrap}}
+@media (max-width:760px){body:not(.print) .headqr{padding:0 0 16px;flex-wrap:wrap}}
 /* QR codes blend into the light title band */
 .headqr{border-left:3px solid var(--khaki);padding-left:20px}
 .headqr .qrbig{background:transparent;color:var(--ink)}
@@ -238,8 +238,8 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 .headqr .qrbig img{width:96px;height:96px}
 .headqr .qrbig .qrlab{font-size:14px;line-height:1.3;white-space:normal}
 .headqr .qrbig .nw{white-space:nowrap}
-@media (max-width:1100px){.headqr .qrbig{width:150px}.headqr .qrbig img{width:84px;height:84px}}
-@media (max-width:760px){.headqr{border-left:0;padding-left:0;border-top:3px solid var(--khaki);padding-top:12px;width:100%;justify-content:flex-start}}
+@media (max-width:1100px){body:not(.print) .headqr .qrbig{width:150px}body:not(.print) .headqr .qrbig img{width:84px;height:84px}}
+@media (max-width:760px){body:not(.print) .headqr{border-left:0;padding-left:0;border-top:3px solid var(--khaki);padding-top:12px;width:100%;justify-content:flex-start}}
 body:not(.print) .head h1{font-size:clamp(30px,3.3vw,52px)}
 .headqr .qrbig .qrlab{overflow-wrap:normal;word-break:normal}
 body:not(.print) .c4 .twocol{grid-template-columns:minmax(0,1fr)}
