@@ -8,3 +8,22 @@
  .intro{padding:8px 16px 12px}
  .extra{padding:0 12px 36px}
 }
+
+.back a{display:inline-block;padding:10px 0;min-height:44px;box-sizing:border-box}
+.ta-tabs{display:none}
+@media (max-width:1099px){
+ .ta-tabs{display:flex;position:sticky;top:0;z-index:5;background:#fff;margin:0;padding:10px 12px}
+ .ta-tabs .chip{flex:1;text-align:center;min-height:44px}
+ .ta-card.off{display:none}
+}
+@media (max-width:760px){
+ body:not(.print) .head-in{flex-direction:row;align-items:center;gap:12px}
+ .head .logo img{width:84px;height:auto}
+ body:not(.print) .head h1{font-size:21px;line-height:1.2}
+ .head-text{padding:10px 0}
+ body:not(.print) .head .byline{font-size:14px;margin:4px 0 0}
+ .ta-grid .card{padding:12px 8px}
+ .sc-card{display:flex;flex-direction:column}
+ .sc-card h3{order:0}.sc-card .find{order:1}.sc-card .readout{order:2;margin:0 0 8px}.sc-card .chart{order:3}.sc-card .cap{order:4}
+ #figSC svg{touch-action:manipulation}
+}
