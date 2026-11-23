@@ -405,3 +405,33 @@ fig_share
 dir.create("figures", showWarnings = FALSE)
 ggsave("figures/fig_share_by_issuer.png", fig_share, width = 10, height = 7,
        dpi = 300, bg = "white")
+
+## poster figure 2: share enacted, federal agency vs Congress, with 95% CIs
+share_two <- share_ci[share_ci$issuer != "State", ]
+share_two$issuer <- factor(share_two$issuer, levels = c("Congress", "Federal agency"))
+share_two$text <- sprintf("%.1f%%", share_two$est)
+
+fig_share_poster <- ggplot(share_two, aes(x = est, y = issuer)) +
+  geom_col(aes(fill = issuer), width = 0.62) +
+  geom_errorbarh(aes(xmin = lo, xmax = hi), height = 0.18, linewidth = 1.2,
+                 colour = "grey15") +
+  geom_text(aes(x = 3, label = text), hjust = 0, size = 9, colour = "white",
+            family = "serif", fontface = "bold") +
+  scale_fill_manual(values = c("Federal agency" = crimson, Congress = slate)) +
+  scale_x_continuous(limits = c(0, 102), breaks = seq(0, 100, 25),
+                     expand = c(0, 0)) +
+  labs(x = "Share enacted (%)", y = NULL) +
+  theme_minimal(base_size = 24, base_family = "serif") +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = cream, colour = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_line(colour = "grey85", linewidth = 0.5),
+        axis.text.y = element_text(colour = "grey10", size = 22),
+        axis.text.x = element_text(colour = "grey30", size = 18),
+        axis.title.x = element_text(size = 18, colour = "grey20", hjust = 1),
+        plot.margin = margin(14, 20, 12, 8))
+fig_share_poster
+
+ggsave("site/assets/fig_share.png", fig_share_poster, width = 8, height = 3.6,
+       dpi = 300, bg = cream)
