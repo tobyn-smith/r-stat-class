@@ -226,3 +226,10 @@ svg text{font-family:"Source Serif Pro",Georgia,serif;fill:var(--ink)}
 .fig2 img{display:block;width:100%;height:auto}
 .fig2 .cap{margin:.4em 0 0}
 @media (max-width:760px){.headqr{padding:0 0 16px;flex-wrap:wrap}}
+/* QR codes blend into the light title band */
+.headqr{border-left:3px solid var(--khaki);padding-left:20px}
+.headqr .qrbig{background:transparent;color:var(--ink)}
+.headqr .qrbig img{background:transparent}
+.headqr .qrbig .qrlab{color:#444}
+.headqr .qrbig .qrlab b{color:var(--red)}
+.headqr{align-items:flex-start}.headqr .qrbig{justify-content:flex-start}
